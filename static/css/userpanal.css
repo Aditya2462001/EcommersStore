@@ -1,0 +1,131 @@
+.main_user_detail
+{
+    display: flex;
+    width: 100%;
+    padding: 10px 1rem;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    margin: 20px;
+}
+.main_user_left
+{
+    flex: 0.3;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid gray;
+}
+.main_user_left .user__image 
+{
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+.main_user_left .user__image img
+{
+    width: 100%;
+    height: 100%;
+}
+
+.main_user_right
+{
+    flex: 0.7;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+/*======================= profile edit model  ======================= */
+.profile__edit__model
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: rgba(0,0,0,0.3);
+}
+.inner__edit__container
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #fff;
+    height: 500px;
+    width: 450px;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 20px;
+}
+.image_preview_block
+{
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+.image_preview_block img
+{
+    width: 100%;
+    height: 100%;
+}
+.close_profile_edit
+{
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    font-size: 3rem;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+/* ========================== profile data edit model ======================= */
+.profile__edit_data_model
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: rgba(0,0,0,0.3);
+}
+.profile_edit_form
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #fff;
+    height: 400px;
+    width: 500px;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 20px;
+}
+.close_profile_edit_data
+{
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    font-size: 3rem;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+}
+

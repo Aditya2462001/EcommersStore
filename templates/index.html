@@ -1,0 +1,1086 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ecom | AdiCreation </title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Ecom">
+  <meta name="author" content="p-themes">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/icons/site.html' %}">
+  <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+  <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Ecom">
+  <meta name="application-name" content="Ecom">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Plugins CSS File -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/jquery.countdown.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+  <!-- Main CSS File -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/skins/skin-demo-24.css' %}">
+  <link rel="stylesheet" href="{% static 'css/demos/demo-24.css' %}">
+  <link rel="stylesheet" href="{% static 'css/demos/demo-18.css' %}">
+  <style>
+    .owl-carousel .owl-item img 
+    {
+    display: block;
+    width: 250px;
+    height: 300px;
+    }
+    .product-image-hover
+    {
+      width: 100% !important;
+      height: 340px !important;
+
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+      <header class="header header-11" style="background:transparent;">
+        <div class="header-middle sticky-header">
+          <div class="header-left">
+            <button class="mobile-menu-toggler">
+              <span class="sr-only">Toggle mobile menu</span>
+              <i class="icon-bars"></i>
+            </button>
+
+
+            <!--========================= Main Site Logo ============================== -->
+
+            <a href="/" class="logo">
+              <img src="{% static 'images/demos/demo-24/logo.png' %}" alt="Molla Logo" width="110" height="25">
+            </a>
+          </div><!-- End .header-left -->
+
+          <div class="header-center">
+            <nav class="main-nav">
+              <ul class="menu sf-arrows">
+                <li class="megamenu-container active">
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  {% if customer %}
+                   <a href="/dashboard" style="color:#ffffff">dashboard</a>
+                  {% else %}
+                  <a href="/login" style="color:#ffffff">Login</a>
+                  {% endif %}
+                </li>
+                <li>
+                  <a href="/categories" style="color:#ffffff">All Categories</a>
+                </li>
+                <li>
+                  <a href="#" class="sf-with-ul">About/Contact</a>
+                  <ul>
+                    <li>
+                      <a href="/about">About</a>
+                    </li>
+                    <li>
+                      <a href="/contact">Contact</a>
+                    </li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </li>
+              </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+          </div>
+
+          <div class="header-right">
+            <div class="header-search">
+              <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+              <form action="/search/" method="GET">
+                <div class="header-search-wrapper">
+                  <label for="q" class="sr-only">Search</label>
+                  <input type="search" class="form-control" name="search" id="q" placeholder="Search in..." required>
+                </div><!-- End .header-search-wrapper -->
+              </form>
+            </div><!-- End .header-search -->
+            {% comment %} <div class="wishlist">
+              <a href="wishlist.html" title="Wishlist">
+                <i class="icon-heart-o"></i>
+                <span class="wishlist-count">3</span>
+              </a>
+            </div><!-- End .compare-dropdown --> {% endcomment %}
+
+            <div class="dropdown cart-dropdown">
+              <a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" data-display="static">
+                <i class="icon-shopping-cart"></i>
+                  <span class="cart-count">{% if cart_count %}{{cart_count}}{% endif %}</span>
+              </a>
+              {% if customer %}
+                <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-cart-products" id="dropdown-cart-products">
+                    {% if carts %}
+                      {% for cart in carts %}
+                        {% if not cart.booking %}
+                          <div class="product cart-product">
+                            <div class="product-cart-details">
+                              <h4 class="product-title">
+                                <a href="/product/{{cart.product.product_slug}}">{{cart.product.product_name}}</a>
+                              </h4>
+      
+                              <span class="cart-product-info">
+                                <span class="cart-product-qty">{{cart.quantity}}</span>
+                                x Rs. {{cart.product.selling_rate}}
+                              </span>
+                            </div><!-- End .product-cart-details -->
+      
+                            <figure class="product-image-container">
+                              <a href="/product/{{cart.product.product_slug}}" class="product-image">
+                                {% if cart.product.product_image1 %}
+                                <img src="{{cart.product.product_image1.url}}" alt="product">
+                                {% else %}
+                                <img src="{% static 'images/products/cart/product-1.jpg' %}" alt="product">
+                                {% endif %}
+                              </a>
+                            </figure>
+                            <p style="cursor: pointer;" data-id="{{cart.product.id}}" class="btn-remove remove-to-cart-btn" title="Remove Product"><i class="icon-close"></i></p>
+                          </div><!-- End .product -->
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                  </div><!-- End .cart-product -->
+
+                  {% comment %} <div class="dropdown-cart-total">
+                    <span>Total</span>
+
+                    <span class="cart-total-price">$160.00</span>
+                  </div><!-- End .dropdown-cart-total --> {% endcomment %}
+
+                  <div class="dropdown-cart-action">
+                    <a href="/cart" class="btn btn-primary">View Cart</a>
+                    <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                  </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+              {% endif %}
+
+
+            </div><!-- End .cart-dropdown -->
+          </div><!-- End .header-right -->
+        </div><!-- End .header-middle -->
+      </header><!-- End .header -->
+
+      <div class="intro-slider-container mb-3 mb-lg-5" style="margin-top:-81px">
+        <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{"dots": true, "nav": false}'>
+            <div class="intro-slide" style="background:linear-gradient(to bottom,rgba(0,0,0,0.5),rgba(0,0,0,0.3)),url({% static 'images/back1.jpg' %});
+            background-position: center;background-size: cover; ">
+                <div class="container">
+                    <div class="intro-content text-center">
+                        <h3 class="intro-subtitle cross-txt text-primary">Explore </h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title text-white">Best Second Hand Books In Best Price</h1><!-- End .intro-title -->
+                        <div class="intro-text text-white">Go and checkout</div><!-- End .intro-text -->
+                        <div class="intro-action cross-txt">
+                            <a href="/products/" class="btn btn-primary btn-rounded px-2 py-3">
+                                <span>Explore All Books</span>
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- End .intro-content -->
+            </div><!-- End .intro-slide -->
+
+            <div class="intro-slide" style="background:linear-gradient(to bottom,rgba(0,0,0,0.5),rgba(0,0,0,0.3)),url({% static 'images/back2.jpg' %});
+            background-position: center;background-size: cover; ">
+                <div class="container">
+                    <div class="intro-content text-center">
+                        <h3 class="intro-subtitle text-primary cross-txt">Most Buy</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title text-white">Best Second Hand</h1><!-- End .intro-title -->
+                        <div class="intro-text text-white">Books</div><!-- End .intro-text -->
+                        <div class="intro-action cross-txt">
+                            <a href="/categories" class="btn btn-primary btn-rounded px-2 py-3">
+                                <span>Discover More Categories</span>
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- End .intro-content -->
+            </div><!-- End .intro-slide -->
+        </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+        <span class="slider-loader text-white"></span><!-- End .slider-loader -->
+    </div><!-- End .intro-slider-container -->
+
+    <main class="main" style="margin-top:-80px">
+      <section class="logos">
+        <div class="container">
+          <hr class="mb-1">
+          <div class="heading">
+            <p class="heading-cat">Categories</p>
+          </div>
+          <div class="owl-carousel mb-5 owl-simple" data-toggle="owl" data-owl-options='{
+                        "nav": true, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "420": {
+                                "items":3
+                            },
+                            "600": {
+                                "items":4
+                            },
+                            "900": {
+                                "items":5
+                            },
+                            "1024": {
+                                "items":6
+                            }
+                        }
+                    }'>
+
+            {% if categorires %}
+                    {% for category in categorires %}
+                      <a href="/category/{{category.name}}" class="brand" style="display:flex;flex-direction:column;">
+                        <img src="{% static 'images/demos/demo-24/brands/1.png' %}" style="width:200px;height: 50px;" alt="Brand Name">
+                        {{category.name|title}}
+                      </a>
+                    {% endfor %}
+            {% endif %}
+              
+          </div><!-- End .owl-carousel -->
+        </div>
+        <div class="container">
+          <center>
+          <a href="/categories/" class="btn btn-primary btn-round text-center">Explore All Categories</a>
+          </center>
+        </div>
+      </section><!-- End .container -->
+
+      {% comment %} <section class="banners center">
+        <div class="container">
+          <div class="row">
+            <div class="banner col-lg-4 col-md-6 col-sm-6">
+              <img src="{% static 'images/demos/demo-24/banners/banner-1.jpg' %}">
+              <div class="intro">
+                <div class="title">
+                  <h3>Online mega deal</h3>
+                </div>
+                <div class="content">
+                  <h4>Camping Gear<br>& Accessories</h4>
+                </div>
+                <div class="action">
+                  <a href="category.html">Shop Now</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="banner percent col-lg-4 col-md-6 col-sm-6">
+              <img src="{% static 'images/demos/demo-24/banners/banner-2.jpg' %}">
+              <div class="intro">
+                <div class="title">
+                  <h3>Summer</h3>
+                  <h4>Clearance</h4>
+                </div>
+                <div class="img-percent">
+                  <img src="{% static 'images/demos/demo-24/banners/percent.png' %}" width="190" height="75">
+                </div>
+                <div class="content">
+                  <h4>* Donec sit amet vulputate<br> velit.Aenean tempus nisl</h4>
+                </div>
+                <div class="action">
+                  <a href="category.html">Discover Now</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="banner col-lg-4  col-md-6 col-sm-6">
+              <img src="{% static 'images/demos/demo-24/banners/banner-3.jpg' %}">
+              <div class="intro">
+                <div class="title">
+                  <h3>Lightning Deals</h3>
+                </div>
+                <div class="content">
+                  <h4>Sports &<br>Outdoors</h4>
+                </div>
+                <div class="action">
+                  <a href="category.html">Shop Now</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> {% endcomment %}
+
+      <section class="best-sellers">
+        <div class="container">
+          <div class="heading">
+            <p class="heading-cat">favourite from every category</p>
+            <h3 class="heading-title">Best Books From All Categories</h3>
+          </div>
+          {% if best_seller %}
+          <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow text-center" data-toggle="owl"
+            data-owl-options='{
+                        "nav": true, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "768": {
+                              "items":3
+                            },
+                            "992": {
+                                "items":3
+                            },
+                            "1200": {
+                              "items":4
+                            }
+                        }
+                    }'>
+            {% for product in best_seller %} 
+                <div class="product product-10 text-center">
+                  <figure class="product-media">
+                    <a href="/product/{{product.product_slug}}">
+                      {% if product.product_image1 %}
+                        <img src="{{product.product_image1.url}}" alt="Product image" class="product-image">
+                        <img src="{{product.product_image1.url}}" alt="Product image" class="product-image-hover">
+                      {% else %}
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-1.jpg' %}" alt="Product image"
+                          class="product-image">
+                          <!-- <img src="{% static 'images/demos/demo-24/best-sellers/product-1-2.jpg' %}" alt="Product image"class="product-image-hover"> -->
+                      {% endif %}
+                    </a>
+                    <div class="product-action-vertical">
+                      <p class="btn-product" title="Stock Count"><span style="color:#fba70f">Stock : {{product.stock_count}}</span></p>
+                  </div><!-- End .product-action-vertical -->
+                  </figure><!-- End .product-media -->
+
+                  <div class="product-body">
+
+                    <div class="product-action">
+                      <p class="btn-cart add-to-cart-btn" style="cursor: pointer;" data-id="{{product.id}}"><span>add to cart</span></p>
+                    </div><!-- End .product-action -->
+                    <div class="product-intro">
+                      <h3 class="product-title">
+                        <a href="/product/{{product.product_slug}}">{{product.product_name}}</a>
+                      </h3><!-- End .product-title -->
+                      <div class="product-price">
+                        Rs. <span class="product-sell-rate">{{product.selling_rate}}</span>  Rs.<del class="product-rate">{{product.rate}}</del>
+                      </div><!-- End .product-price -->
+                    </div>
+                    <p>Discount <span class="discount-class"></span>%</p>
+                    <div class="product-detail">
+                      <div class="ratings-container">
+                        <div class="ratings">
+                          <div class="ratings-val" style="width: {% widthratio  product.product_rating 1 2 %}0%;"></div><!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+                        <span class="ratings-text">( 6 Reviews )</span> 
+                      </div><!-- End .rating-container -->
+
+                    </div>
+                  </div><!-- End .product-body -->
+                </div><!-- End .product -->
+            
+            {% endfor %}
+          </div>
+           
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="container">
+        <div class="row justify-content-center">
+          <div class="col-sm-6 col-lg-4">
+            <div class="banner">
+              <a href="#">
+                <img src="{% static 'images/banners/grid/4cols/banner-1.jpg' %}" alt="Banner">
+              </a>
+
+              <div class="banner-content">
+                <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
+                <h3 class="banner-title">Phasellus <br>ultrices nulla.</h3><!-- End .banner-title -->
+                <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+              </div><!-- End .banner-content -->
+            </div><!-- End .banner -->
+          </div><!-- End .col-lg-4 -->
+
+          <div class="col-sm-6 col-lg-4 order-lg-last">
+            <div class="banner">
+              <a href="#">
+                <img src="{% static 'images/banners/grid/4cols/banner-4.jpg' %}" alt="Banner">
+              </a>
+
+              <div class="banner-content">
+                <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
+                <h3 class="banner-title text-white">Donec consectetuer <br>ligula vulputate.</h3><!-- End .banner-title -->
+                <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+              </div><!-- End .banner-content -->
+            </div><!-- End .banner -->
+              </div><!-- End .col-lg-4 -->
+
+              <div class="col-lg-4">
+                  <div class="row">
+                      <div class="col-sm-6 col-lg-12">
+                    <div class="banner">
+                      <a href="#">
+                        <img src="{% static 'images/banners/grid/4cols/banner-2.jpg' %}" alt="Banner">
+                      </a>
+
+                      <div class="banner-content">
+                        <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
+                        <h3 class="banner-title">Phasellus <br>ultrices nulla.</h3><!-- End .banner-title -->
+                        <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+                      </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                      </div><!-- End .col-sm-6 col-lg-12 -->
+
+                  <div class="col-sm-6 col-lg-12">
+                    <div class="banner">
+                      <a href="#">
+                        <img src="{% static 'images/banners/grid/4cols/banner-3.jpg' %}" alt="Banner">
+                      </a>
+
+                      <div class="banner-content">
+                        <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
+                        <h3 class="banner-title text-white">Donec consectetuer <br>ligula vulputate.</h3><!-- End .banner-title -->
+                        <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+                      </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                  </div><!-- End .col-sm-6 col-lg-12 -->
+                  </div><!-- End .row -->
+              </div><!-- End .col-lg-4 -->
+        </div><!-- End .row -->
+      </section>
+
+      <section class="best-sellers">
+        <div class="container">
+          <div class="heading">
+            <p class="heading-cat">favourite from every category</p>
+            <h3 class="heading-title">Best Programming Books</h3>
+            <div class="container">
+              <center>
+              <a href="/category/Programming" class="btn btn-primary btn-round text-center">Explore All Programming Books</a>
+              </center>
+            </div>
+          </div>
+          {% if programming_books %}
+          <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow text-center" data-toggle="owl"
+            data-owl-options='{
+                        "nav": true, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "768": {
+                              "items":3
+                            },
+                            "992": {
+                                "items":3
+                            },
+                            "1200": {
+                              "items":4
+                            }
+                        }
+                    }'>
+            {% for product in programming_books %}
+                    
+                <div class="product product-10 text-center">
+                  <figure class="product-media">
+                    <a href="/product/{{product.product_slug}}">
+                      {% if product.product_image1 %}
+                        <img src="{{product.product_image1.url}}" alt="Product image"
+                        class="product-image">
+                        <img src="{{product.product_image1.url}}" alt="Product image"
+                          class="product-image-hover">
+                      {% else %}
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-1.jpg' %}" alt="Product image"
+                          class="product-image">
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-2.jpg' %}" alt="Product image"
+                            class="product-image-hover">
+                      {% endif %}
+                    </a>
+                    <div class="product-action-vertical">
+                      <p class="btn-product" title="Stock Count"><span style="color:#fba70f">Stock : {{product.stock_count}}</span></p>
+                    </div><!-- End .product-action-vertical -->
+                  </figure><!-- End .product-media -->
+
+                  <div class="product-body">
+
+                    <div class="product-action">
+                      <p class="btn-cart add-to-cart-btn" style="cursor: pointer;" data-id="{{product.id}}"><span>add to cart</span></p>
+                      {% comment %} <a href="#" class="btn-product-icon"><span>View More</span></a> {% endcomment %}
+                    </div><!-- End .product-action -->
+                    <div class="product-intro">
+                      <h3 class="product-title">
+                        <a href="/product/{{product.product_slug}}">{{product.product_name}}</a>
+                      </h3><!-- End .product-title -->
+                      <div class="product-price">
+                        Rs. <span class="product-sell-rate">{{product.selling_rate}}</span>  Rs.<del class="product-rate">{{product.rate}}</del>
+                      </div><!-- End .product-price -->
+                    </div>
+                    <p>Discount <span class="discount-class"></span>%</p>
+                    <div class="product-detail">
+                      <div class="ratings-container">
+                        <div class="ratings">
+                          <div class="ratings-val" style="width: {% widthratio  product.product_rating 1 2 %}0%;"></div><!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+                        {% comment %} <span class="ratings-text">( 6 Reviews )</span> {% endcomment %}
+                      </div><!-- End .rating-container -->
+
+                    </div>
+                  </div><!-- End .product-body -->
+                </div><!-- End .product -->
+            
+            {% endfor %}
+          </div>
+           
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="best-sellers">
+        <div class="container">
+          <div class="heading">
+            <p class="heading-cat">favourite from every category</p>
+            <h3 class="heading-title">Best Love Books</h3>
+            <div class="container">
+              <center>
+              <a href="/category/Love" class="btn btn-primary btn-round text-center">Explore All Love Books</a>
+              </center>
+            </div>
+          </div>
+          {% if love_books %}
+          <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow text-center" data-toggle="owl"
+            data-owl-options='{
+                        "nav": true, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "768": {
+                              "items":3
+                            },
+                            "992": {
+                                "items":3
+                            },
+                            "1200": {
+                              "items":4
+                            }
+                        }
+                    }'>
+            {% for product in love_books %}
+                    
+                <div class="product product-10 text-center">
+                  <figure class="product-media">
+                    <a href="/product/{{product.product_slug}}">
+                      {% if product.product_image1 %}
+                        <img src="{{product.product_image1.url}}" alt="Product image"
+                        class="product-image">
+                        <img src="{{product.product_image1.url}}" alt="Product image"
+                          class="product-image-hover">
+                      {% else %}
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-1.jpg' %}" alt="Product image"
+                          class="product-image">
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-2.jpg' %}" alt="Product image"
+                            class="product-image-hover">
+                      {% endif %}
+                    </a>
+                    <div class="product-action-vertical">
+                      <p class="btn-product" title="Stock Count"><span style="color:#fba70f">Stock : {{product.stock_count}}</span></p>
+                    </div><!-- End .product-action-vertical -->
+
+                  </figure><!-- End .product-media -->
+
+                  <div class="product-body">
+
+                    <div class="product-action">
+                      <p class="btn-cart add-to-cart-btn" style="cursor: pointer;" data-id="{{product.id}}"><span>add to cart</span></p>
+                      {% comment %} <a href="#" class="btn-product-icon"><span>View More</span></a> {% endcomment %}
+                    </div><!-- End .product-action -->
+                    <div class="product-intro">
+                      <h3 class="product-title">
+                        <a href="/product/{{product.product_slug}}">{{product.product_name}}</a>
+                      </h3><!-- End .product-title -->
+                      <div class="product-price">
+                        Rs. <span class="product-sell-rate">{{product.selling_rate}}</span>  Rs.<del class="product-rate">{{product.rate}}</del>
+                      </div><!-- End .product-price -->
+                    </div>
+                    <p>Discount <span class="discount-class"></span>%</p>
+                    <div class="product-detail">
+                      <div class="ratings-container">
+                        <div class="ratings">
+                          <div class="ratings-val" style="width: {% widthratio  product.product_rating 1 2 %}0%;"></div><!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+                        {% comment %} <span class="ratings-text">( 6 Reviews )</span> {% endcomment %}
+                      </div><!-- End .rating-container -->
+
+                    </div>
+                  </div><!-- End .product-body -->
+                </div><!-- End .product -->
+            
+            {% endfor %}
+          </div>
+           
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="container my-4 video-banner">
+        <img src="{% static 'images/demos/demo-24/video-banner/banner.jpg' %}">
+
+        <div class="intro video">
+          <div class="title">
+            <h3><i>Spring / Summer</i></h3>
+          </div>
+          <div class="content">
+            <h4>New & Stylish<br>Collection 2019</h4>
+          </div>
+          <div class="action">
+            <a href="https://www.youtube.com/watch?v=YbJOTdZBX1g" class="btn-iframe"><i class="icon-play"></i></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="best-sellers">
+        <div class="container">
+          <div class="heading">
+            <p class="heading-cat">favourite from every category</p>
+            <h3 class="heading-title">Best Biography Books</h3>
+          </div>
+          {% if biography_books %}
+          <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow text-center" data-toggle="owl"
+            data-owl-options='{
+                        "nav": true, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "768": {
+                              "items":3
+                            },
+                            "992": {
+                                "items":3
+                            },
+                            "1200": {
+                              "items":4
+                            }
+                        }
+                    }'>
+            {% for product in biography_books %}
+                    
+                <div class="product product-10 text-center">
+                  <figure class="product-media">
+                    <a href="/product/{{product.product_slug}}">
+                      {% if product.product_image1 %}
+                        <img src="{{product.product_image1.url}}" alt="Product image"
+                        class="product-image">
+                        <img src="{{product.product_image1.url}}" alt="Product image"
+                          class="product-image-hover">
+                      {% else %}
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-1.jpg' %}" alt="Product image"
+                          class="product-image">
+                          <img src="{% static 'images/demos/demo-24/best-sellers/product-1-2.jpg' %}" alt="Product image"
+                            class="product-image-hover">
+                      {% endif %}
+                    </a>
+                    <div class="product-action-vertical">
+                      <p class="btn-product" title="Stock Count"><span style="color:#fba70f">Stock : {{product.stock_count}}</span></p>
+                    </div><!-- End .product-action-vertical -->
+
+                  </figure><!-- End .product-media -->
+
+                  <div class="product-body">
+
+                    <div class="product-action">
+                      <p class="btn-cart add-to-cart-btn" style="cursor: pointer;" data-id="{{product.id}}"><span>add to cart</span></p>
+                      {% comment %} <a href="#" class="btn-product-icon"><span>View More</span></a> {% endcomment %}
+                    </div><!-- End .product-action -->
+                    <div class="product-intro">
+                      <h3 class="product-title">
+                        <a href="/product/{{product.product_slug}}">{{product.product_name}}</a>
+                      </h3><!-- End .product-title -->
+                      <div class="product-price">
+                        Rs. <span class="product-sell-rate">{{product.selling_rate}}</span>  Rs.<del class="product-rate">{{product.rate}}</del>
+                      </div><!-- End .product-price -->
+                    </div>
+                    <p>Discount <span class="discount-class"></span>%</p>
+                    <div class="product-detail">
+                      <div class="ratings-container">
+                        <div class="ratings">
+                          <div class="ratings-val" style="width: {% widthratio  product.product_rating 1 2 %}0%;"></div><!-- End .ratings-val -->
+                        </div><!-- End .ratings -->
+                        {% comment %} <span class="ratings-text">( 6 Reviews )</span> {% endcomment %}
+                      </div><!-- End .rating-container -->
+
+                    </div>
+                  </div><!-- End .product-body -->
+                </div><!-- End .product -->
+            
+            {% endfor %}
+
+          </div>
+           
+          {% endif %}
+        </div>
+        <div class="container">
+          <center>
+          <a href="/category/Biography" class="btn btn-primary btn-round text-center">Explore All Biography</a>
+          </center>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer mt-3">
+
+      <div class="footer-middle">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-md-12">
+              <div class="widget widget-about">
+                <img src="{% static 'images/demos/demo-24/logo.png' %}" class="footer-logo" alt="Footer Logo"
+                  width="110" height="25">
+                <p>This is the best Second Hand booked selling Website.There are the best and top quality books. </p>
+
+                <div class="social-icons">
+                  <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                  <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                  <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                  <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                  <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                </div><!-- End .soial-icons -->
+              </div><!-- End .widget about-widget -->
+            </div><!-- End .col-sm-12 col-lg-3 -->
+
+            <div class="col-lg-3 col-sm-4 col-md-4">
+              <div class="widget">
+                <h4 class="widget-title">useful links</h4><!-- End .widget-title -->
+
+                <ul class="widget-list">
+                  <li><a href="/about">About Ecom</a></li>
+                  <li><a href="/">How to shop on Molla</a></li>
+                  <li><a href="/contact">Contact us</a></li>
+                  {% if customer %}
+                  <li><a href="/dashboard">Dashboard</a></li>
+                  {% else %}
+                  <li><a href="/login">Log in</a></li>
+                  {% endif %}
+                </ul><!-- End .widget-list -->
+              </div><!-- End .widget -->
+            </div><!-- End .col-sm-4 col-lg-3 -->
+
+            <div class="col-lg-3 col-sm-4 col-md-4">
+              <div class="widget">
+                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                <ul class="widget-list">
+                  <li><a href="/">Payment Methods</a></li>
+                  <li><a href="/">Money-back guarantee!</a></li>
+                  <li><a href="/">Free Shipping</a></li>
+                  <li><a href="/">Terms and conditions</a></li>
+                  <li><a href="/">Privacy Policy</a></li>
+                </ul><!-- End .widget-list -->
+              </div><!-- End .widget -->
+            </div><!-- End .col-sm-4 col-lg-3 -->
+
+            <div class="col-lg-3 col-sm-4 col-md-4">
+              <div class="widget">
+                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                <ul class="widget-list">
+                  {% if customer %}
+                  <li><a href="/dashboard">Dashboard</a></li>
+                  <li><a href="/logout">Logout</a></li>
+                  {% else %}
+                  <li><a href="/login">Log in</a></li>
+                  {% endif %}
+                  <li><a href="/cart">View Cart</a></li>
+                  <li><a href="#">Track My Order</a></li>
+                  <li><a href="/">Help</a></li>
+                </ul><!-- End .widget-list -->
+              </div><!-- End .widget -->
+            </div><!-- End .col-sm-64 col-lg-3 -->
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <p class="footer-copyright">Copyright © 2021 Ecom Store. All Rights Reserved.</p>
+          <!-- End .footer-copyright -->
+
+          <figure class="footer-payments">
+            <img src="{% static 'images/payments.png' %}" alt="Payment methods" width="272" height="20">
+          </figure><!-- End .footer-payments -->
+
+        </div><!-- End .widget-about-info -->
+      </div><!-- End .container -->
+  </div><!-- End .footer-bottom -->
+  </footer>
+  </div>
+
+  <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+  <div class="mobile-menu-overlay">
+  </div><!-- End .mobil-menu-overlay -->
+  <div class="mobile-menu-container mobile-menu-light">
+    <div class="mobile-menu-wrapper">
+      <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+      <form action="#" method="get" class="mobile-search">
+        <label for="mobile-search" class="sr-only">Search</label>
+        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+          required>
+        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+      </form>
+
+      <nav class="mobile-nav">
+        <ul class="mobile-menu">
+          <li class="active">
+            <a href="index.html">HOME</a>
+          </li>
+          <li>
+            <a href="category.html">Login</a>
+          </li>
+          <li>
+            <a href="about.html">Register</a>
+          </li>
+          <li>
+            <a href="contact.html">CONTACTS</a>
+
+            <ul>
+              <li><a href="contact.html">Contact 01</a></li>
+              <li><a href="contact-2.html">Contact 02</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- End .mobile-nav -->
+
+      <div class="social-icons">
+        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+      </div><!-- End .social-icons -->
+    </div><!-- End .mobile-menu-wrapper -->
+  </div><!-- End .mobile-menu-container -->
+
+  {% comment %} <div class="container newsletter-popup-container mfp-hide" id="newsletter-popup-form">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="row no-gutters bg-white newsletter-popup-content">
+          <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
+            <div class="banner-content text-center">
+              <img src="{% static 'images/popup/newsletter/logo.png' %}" class="logo" alt="logo" width="60" height="15">
+              <h2 class="banner-title">get <span>25<light>%</light></span> off</h2>
+              <p>Subscribe to the Molla eCommerce newsletter to receive timely updates from your favorite products.</p>
+              <form action="#">
+                <div class="input-group input-group-round">
+                  <input type="email" class="form-control form-control-white" placeholder="Your Email Address"
+                    aria-label="Email Adress" required>
+                  <div class="input-group-append">
+                    <button class="btn" type="submit"><span>go</span></button>
+                  </div><!-- .End .input-group-append -->
+                </div><!-- .End .input-group -->
+              </form>
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+                <label class="custom-control-label" for="register-policy-2">Do not show this popup again</label>
+              </div><!-- End .custom-checkbox -->
+            </div>
+          </div>
+          <div class="col-xl-2-5col col-lg-5 ">
+            <img src="{% static 'images/popup/newsletter/img-1.jpg' %}" class="newsletter-img" alt="newsletter">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> {% endcomment %}
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'js/superfish.min.js' %}"></script>
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+  <script src="{% static 'js/jquery.plugin.min.js' %}"></script>
+  <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+  <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/demos/demo-24.js' %}"></script>
+  <script>
+    const add_to_cart_btn = document.querySelectorAll('.add-to-cart-btn');
+    let remove_cart_btn = document.querySelectorAll('.remove-to-cart-btn');
+    let customer = ``;
+    {% if customer %}
+      customer = `{{customer.id}}`;
+    {% endif %}
+    console.log(customer);
+
+    add_to_cart_btn.forEach((btn) =>
+    {
+      btn.addEventListener('click',(e) =>
+      {
+        $.ajax({
+          url:'/add-to-cart/',
+          method:'POST',
+          data:{
+            productId: btn.getAttribute('data-id'),
+            customerId:customer,
+          },
+          success:(response) =>
+          {
+            if(response.tag == 'success')
+            {
+              alert(response.message);
+              $('.cart-count').text(response.count);
+              let product_data = ` <div class="product cart-product">
+                                    <div class="product-cart-details">
+                                      <h4 class="product-title">
+                                        <a href="/product/${response.cart_list[4]}">${response.cart_list[0]}</a>
+                                      </h4>
+
+                                      <span class="cart-product-info">
+                                        <span class="cart-product-qty">${response.cart_list[3]}</span>
+                                        x Rs. ${response.cart_list[2]}
+                                      </span>
+                                    </div><!-- End .product-cart-details -->
+
+                                    <figure class="product-image-container">
+                                      <a href="/product/${response.cart_list[4]}" class="product-image">
+                                        <img src="${response.cart_list[1]}" alt="product">
+                                      </a>
+                                    </figure>
+                                    <p class="btn-remove remove-to-cart-btn" data-id="${response.cart_list[5]}" style="cursor:pointer;" title="Remove Product"><i class="icon-close"></i></p>
+                                  </div><!-- End .product -->`;
+
+              $('#dropdown-cart-products').append(product_data);
+
+              remove_cart_btn = document.querySelectorAll('.remove-to-cart-btn');
+              remove_cart_btn.forEach((btn,index) =>
+              {
+                btn.addEventListener('click',(e) =>
+                {
+                  console.log('btn clicked');
+                  $.ajax({
+                    url:'/remove-to-cart/',
+                    method:'POST',
+                    data:{
+                      productId: btn.getAttribute('data-id'),
+                      customerId:customer,
+                    },
+                    success:(response) =>
+                    {
+                      if(response.tag == 'success')
+                      {
+                        alert(response.message);
+                        $('.cart-count').text(response.count);
+                        let all_carts = document.querySelectorAll('.cart-product');
+                        all_carts.forEach((crt,c_i) =>
+                        {
+                          if(c_i === index)
+                          {
+                          crt.style.display = 'none';
+                          }
+                        })
+
+                      }
+                      else if(response.tag == 'fail')
+                      {
+                        alert(response.message);
+                      }
+                    }
+                  })
+                })
+              })
+              
+
+            }
+            else if(response.tag == 'fail')
+            {
+              alert(response.message);
+            }
+          }
+        })
+      })
+    })
+
+
+    remove_cart_btn.forEach((btn,index) =>
+    {
+      btn.addEventListener('click',(e) =>
+      {
+        console.log('btn clicked');
+        $.ajax({
+          url:'/remove-to-cart/',
+          method:'POST',
+          data:{
+            productId: btn.getAttribute('data-id'),
+            customerId:customer,
+          },
+          success:(response) =>
+          {
+            if(response.tag == 'success')
+            {
+              alert(response.message);
+              $('.cart-count').text(response.count);
+              let all_carts = document.querySelectorAll('.cart-product');
+              all_carts.forEach((crt,c_i) =>
+              {
+                if(c_i === index)
+                {
+                 crt.style.display = 'none';
+                }
+              })
+
+            }
+            else if(response.tag == 'fail')
+            {
+              alert(response.message);
+            }
+          }
+        })
+      })
+    });
+
+
+    const product_sell_rate = document.querySelectorAll('.product-sell-rate');
+    const product_rate = document.querySelectorAll('.product-rate');
+    const discount_class = document.querySelectorAll('.discount-class');
+
+
+    product_sell_rate.forEach((psr,index) =>
+    {
+      let discount;
+
+      discount = ((parseInt(product_rate[index].innerHTML) - parseInt(psr.innerHTML))*100)/parseInt(product_rate[index].innerHTML);
+
+
+      discount_class[index].innerHTML = discount.toFixed(2) ;
+    })
+
+    
+  </script>
+</body>
+
+</html>

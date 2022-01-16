@@ -1,0 +1,38 @@
+{% for product in products %}
+<div class="col-6 col-md-4 col-lg-4 col-xl-3">
+    <div class="product">
+        <figure class="product-media">
+            <span class="product-label label-new">New</span>
+            <a href="/product/{{product.product_slug}}">
+                {% if product.product_image1 %}
+                <img src="{{product.product_image1.url}}" alt="Product image" class="product-image">
+                {% endif %}
+            </a>
+
+            {% comment %} <div class="product-action-vertical">
+                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+            </div><!-- End .product-action --> {% endcomment %}
+
+            <div class="product-action action-icon-top">
+                <p style="cursor:pointer" class="btn-product add-to-cart-btn btn-cart"><span>add to cart</span></p>
+                <a href="/product/{{product.product_slug}}" class="btn-product" title="Quick view"><span>More
+                        Details</span></a>
+            </div><!-- End .product-action -->
+        </figure><!-- End .product-media -->
+
+        <div class="product-body">
+            <h3 class="product-title"><a href="/product/{{product.product_slug}}">{{product.product_name}}</a></h3>
+            <!-- End .product-title -->
+            <div class="product-price">
+                Rs. {{product.selling_rate}} Rs. <del>{{product.rate}}</del>
+            </div><!-- End .product-price -->
+            <div class="ratings-container">
+                <div class="ratings">
+                    <div class="ratings-val" style="width: {% widthratio  product.product_rating 1 2 %}0%;"></div><!-- End .ratings-val -->
+                </div><!-- End .ratings -->
+                <span class="ratings-text">( 0 Reviews )</span>
+            </div><!-- End .rating-container -->
+        </div><!-- End .product-body -->
+    </div><!-- End .product -->
+</div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+{% endfor %}

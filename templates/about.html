@@ -1,0 +1,540 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ecom | Contact US </title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Ecom">
+  <meta name="author" content="p-themes">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/icons/site.html' %}">
+  <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+  <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Ecom">
+  <meta name="application-name" content="Ecom">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Plugins CSS File -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/jquery.countdown.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+  <!-- Main CSS File -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/skins/skin-demo-24.css' %}">
+  <link rel="stylesheet" href="{% static 'css/demos/demo-24.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+</head>
+
+<body>
+    <div class="page-wrapper">
+      <header class="header header-11" style="background:#222;">
+        <div class="header-middle sticky-header">
+          <div class="header-left">
+            <button class="mobile-menu-toggler">
+              <span class="sr-only">Toggle mobile menu</span>
+              <i class="icon-bars"></i>
+            </button>
+
+
+            <!--========================= Main Site Logo ============================== -->
+
+            <a href="/" class="logo">
+              <img src="{% static 'images/demos/demo-24/logo.png' %}" alt="Molla Logo" width="110" height="25">
+            </a>
+          </div><!-- End .header-left -->
+
+          <div class="header-center">
+            <nav class="main-nav">
+              <ul class="menu sf-arrows">
+                <li class="megamenu-container active">
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  {% if customer %}
+                   <a href="/dashboard" style="color:#ffffff">dashboard</a>
+                  {% else %}
+                  <a href="/login" style="color:#ffffff">Login</a>
+                  {% endif %}
+                </li>
+                <li>
+                  <a href="/categories" style="color:#ffffff">All Categories</a>
+                </li>
+                <li>
+                  <a href="#" class="sf-with-ul">About/Contact</a>
+                  <ul>
+                    <li>
+                      <a href="/about">About</a>
+                    </li>
+                    <li>
+                      <a href="/contact">Contact</a>
+                    </li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </li>
+              </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+          </div>
+
+          <div class="header-right">
+            <div class="header-search">
+              <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+              <form action="/search/" method="GET">
+                <div class="header-search-wrapper">
+                  <label for="q" class="sr-only">Search</label>
+                  <input type="search" class="form-control" name="search" id="q" placeholder="Search in..." required>
+                </div><!-- End .header-search-wrapper -->
+              </form>
+            </div><!-- End .header-search -->
+            {% comment %} <div class="wishlist">
+              <a href="wishlist.html" title="Wishlist">
+                <i class="icon-heart-o"></i>
+                <span class="wishlist-count">3</span>
+              </a>
+            </div><!-- End .compare-dropdown --> {% endcomment %}
+
+            <div class="dropdown cart-dropdown">
+              <a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" data-display="static">
+                <i class="icon-shopping-cart"></i>
+                  <span class="cart-count">{% if cart_count %}{{cart_count}}{% endif %}</span>
+              </a>
+              {% if customer %}
+                <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-cart-products" id="dropdown-cart-products">
+                    {% if carts %}
+                      {% for cart in carts %}
+                        {% if not cart.booking %}
+                          <div class="product cart-product">
+                            <div class="product-cart-details">
+                              <h4 class="product-title">
+                                <a href="/product/{{cart.product.product_slug}}">{{cart.product.product_name}}</a>
+                              </h4>
+      
+                              <span class="cart-product-info">
+                                <span class="cart-product-qty">{{cart.quantity}}</span>
+                                x Rs. {{cart.product.selling_rate}}
+                              </span>
+                            </div><!-- End .product-cart-details -->
+      
+                            <figure class="product-image-container">
+                              <a href="/product/{{cart.product.product_slug}}" class="product-image">
+                                {% if cart.product.product_image1 %}
+                                <img src="{{cart.product.product_image1.url}}" alt="product">
+                                {% else %}
+                                <img src="{% static 'images/products/cart/product-1.jpg' %}" alt="product">
+                                {% endif %}
+                              </a>
+                            </figure>
+                            <p style="cursor: pointer;" data-id="{{cart.product.id}}" class="btn-remove remove-to-cart-btn" title="Remove Product"><i class="icon-close"></i></p>
+                          </div><!-- End .product -->
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                  </div><!-- End .cart-product -->
+
+                  {% comment %} <div class="dropdown-cart-total">
+                    <span>Total</span>
+
+                    <span class="cart-total-price">$160.00</span>
+                  </div><!-- End .dropdown-cart-total --> {% endcomment %}
+
+                  <div class="dropdown-cart-action">
+                    <a href="/cart" class="btn btn-primary">View Cart</a>
+                    <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                  </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+              {% endif %}
+
+
+            </div><!-- End .cart-dropdown -->
+          </div><!-- End .header-right -->
+        </div><!-- End .header-middle -->
+      </header><!-- End .header -->
+
+        <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">About us</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+            <div class="container">
+	        	<div class="page-header page-header-big text-center" style="background-image: url('{% static 'images/about-header-bg.jpg' %}')">
+        			<h1 class="page-title text-white">About us<span class="text-white">Who we are</span></h1>
+	        	</div><!-- End .page-header -->
+            </div><!-- End .container -->
+
+            <div class="page-content pb-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 mb-3 mb-lg-0">
+                            <h2 class="title">Our Vision</h2><!-- End .title -->
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. </p>
+                        </div><!-- End .col-lg-6 -->
+                        
+                        <div class="col-lg-6">
+                            <h2 class="title">Our Mission</h2><!-- End .title -->
+                            <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus. <br>Praesent elementum hendrerit tortor. Sed semper lorem at felis. </p>
+                        </div><!-- End .col-lg-6 -->
+                    </div><!-- End .row -->
+
+                    <div class="mb-5"></div><!-- End .mb-4 -->
+                </div><!-- End .container -->
+
+                <div class="bg-light-2 pt-6 pb-5 mb-6 mb-lg-8">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-5 mb-3 mb-lg-0">
+                                <h2 class="title">Who We Are</h2><!-- End .title -->
+                                <p class="lead text-primary mb-3">Pellentesque odio nisi, euismod pharetra a ultricies <br>in diam. Sed arcu. Cras consequat</p><!-- End .lead text-primary -->
+                                <p class="mb-2">Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti. Sed egestas, ante et vulputate volutpat, uctus metus libero eu augue. </p>
+
+                                <a href="blog.html" class="btn btn-sm btn-minwidth btn-outline-primary-2">
+                                    <span>VIEW OUR NEWS</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </a>
+                            </div><!-- End .col-lg-5 -->
+
+                            <div class="col-lg-6 offset-lg-1">
+                                <div class="about-images">
+                                    <img src="assets/images/about/img-1.jpg" alt="" class="about-img-front">
+                                    <img src="assets/images/about/img-2.jpg" alt="" class="about-img-back">
+                                </div><!-- End .about-images -->
+                            </div><!-- End .col-lg-6 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .bg-light-2 pt-6 pb-6 -->
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="brands-text">
+                                <h2 class="title">The world's premium design brands in one destination.</h2><!-- End .title -->
+                                <p>Phasellus hendrerit. Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nis</p>
+                            </div><!-- End .brands-text -->
+                        </div><!-- End .col-lg-5 -->
+                        <div class="col-lg-7">
+                            <div class="brands-display">
+                                <div class="row justify-content-center">
+                                    <div class="col-6 col-sm-4">
+                                        <a href="#" class="brand">
+                                            <img src="{% static 'images/brands/1.png' %}" alt="Brand Name">
+                                        </a>
+                                    </div><!-- End .col-sm-4 -->
+
+                                    <div class="col-6 col-sm-4">
+                                        <a href="#" class="brand">
+                                            <img src="{% static 'images/brands/2.png' %}" alt="Brand Name">
+                                        </a>
+                                    </div><!-- End .col-sm-4 -->
+
+                                    <div class="col-6 col-sm-4">
+                                        <a href="#" class="brand">
+                                            <img src="{% static 'images/brands/3.png' %}" alt="Brand Name">
+                                        </a>
+                                    </div><!-- End .col-sm-4 -->
+
+                                    <div class="col-6 col-sm-4">
+                                        <a href="#" class="brand">
+                                            <img src="{% static 'images/brands/4.png' %}" alt="Brand Name">
+                                        </a>
+                                    </div><!-- End .col-sm-4 -->
+
+                                    <div class="col-6 col-sm-4">
+                                        <a href="#" class="brand">
+                                            <img src="{% static 'images/brands/5.png' %}" alt="Brand Name">
+                                        </a>
+                                    </div><!-- End .col-sm-4 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .brands-display -->
+                        </div><!-- End .col-lg-7 -->
+                    </div><!-- End .row -->
+
+                    <hr class="mt-4 mb-6">
+
+                    <h2 class="title text-center mb-4">Meet Our Team</h2><!-- End .title text-center mb-2 -->
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="member member-anim text-center">
+                                <figure class="member-media">
+                                    <img src="{% static 'images/team/member-1.jpg' %}" alt="member photo">
+
+                                    <figcaption class="member-overlay">
+                                        <div class="member-overlay-content">
+                                            <h3 class="member-title">Samanta Grey<span>Founder & CEO</span></h3><!-- End .member-title -->
+                                            <p>Sed pretium, ligula sollicitudin viverra, tortor libero sodales leo, eget blandit nunc.</p> 
+                                            <div class="social-icons social-icons-simple">
+                                                <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                                <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                                <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                            </div><!-- End .soial-icons -->
+                                        </div><!-- End .member-overlay-content -->
+                                    </figcaption><!-- End .member-overlay -->
+                                </figure><!-- End .member-media -->
+                                <div class="member-content">
+                                    <h3 class="member-title">Samanta Grey<span>Founder & CEO</span></h3><!-- End .member-title -->
+                                </div><!-- End .member-content -->
+                            </div><!-- End .member -->
+                        </div><!-- End .col-md-4 -->
+
+                        <div class="col-md-4">
+                            <div class="member member-anim text-center">
+                                <figure class="member-media">
+                                    <img src="{% static 'images/team/member-2.jpg' %}" alt="member photo">
+
+                                    <figcaption class="member-overlay">
+                                        <div class="member-overlay-content">
+                                            <h3 class="member-title">Bruce Sutton<span>Sales & Marketing Manager</span></h3><!-- End .member-title -->
+                                            <p>Sed pretium, ligula sollicitudin viverra, tortor libero sodales leo, eget blandit nunc.</p> 
+                                            <div class="social-icons social-icons-simple">
+                                                <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                                <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                                <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                            </div><!-- End .soial-icons -->
+                                        </div><!-- End .member-overlay-content -->
+                                    </figcaption><!-- End .member-overlay -->
+                                </figure><!-- End .member-media -->
+                                <div class="member-content">
+                                    <h3 class="member-title">Bruce Sutton<span>Sales & Marketing Manager</span></h3><!-- End .member-title -->
+                                </div><!-- End .member-content -->
+                            </div><!-- End .member -->
+                        </div><!-- End .col-md-4 -->
+
+                        <div class="col-md-4">
+                            <div class="member member-anim text-center">
+                                <figure class="member-media">
+                                    <img src="{% static 'images/team/member-3.jpg' %}" alt="member photo">
+
+                                    <figcaption class="member-overlay">
+                                        <div class="member-overlay-content">
+                                            <h3 class="member-title">Janet Joy<span>Product Manager</span></h3><!-- End .member-title -->
+                                            <p>Sed pretium, ligula sollicitudin viverra, tortor libero sodales leo, eget blandit nunc.</p> 
+                                            <div class="social-icons social-icons-simple">
+                                                <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                                <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                                <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                            </div><!-- End .soial-icons -->
+                                        </div><!-- End .member-overlay-content -->
+                                    </figcaption><!-- End .member-overlay -->
+                                </figure><!-- End .member-media -->
+                                <div class="member-content">
+                                    <h3 class="member-title">Janet Joy<span>Product Manager</span></h3><!-- End .member-title -->
+                                </div><!-- End .member-content -->
+                            </div><!-- End .member -->
+                        </div><!-- End .col-md-4 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+
+                <div class="mb-2"></div><!-- End .mb-2 -->
+
+                <div class="about-testimonials bg-light-2 pt-6 pb-6">
+                    <div class="container">
+                        <h2 class="title text-center mb-3">What Customer Say About Us</h2><!-- End .title text-center -->
+
+                        <div class="owl-carousel owl-simple owl-testimonials-photo" data-toggle="owl" 
+                            data-owl-options='{
+                                "nav": false, 
+                                "dots": true,
+                                "margin": 20,
+                                "loop": false,
+                                "responsive": {
+                                    "1200": {
+                                        "nav": true
+                                    }
+                                }
+                            }'>
+                            <blockquote class="testimonial text-center">
+                                <img src="{% static 'images/testimonials/user-1.jpg' %}" alt="user">
+                                <p>“ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Pellentesque aliquet nibh nec urna. <br>In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, eget blandit nunc tortor eu nibh. Nullam mollis. Ut justo. Suspendisse potenti. ”</p>
+                                <cite>
+                                    Jenson Gregory
+                                    <span>Customer</span>
+                                </cite>
+                            </blockquote><!-- End .testimonial -->
+
+                            <blockquote class="testimonial text-center">
+                                <img src="{% static 'images/testimonials/user-2.jpg' %}" alt="user">
+                                <p>“ Impedit, ratione sequi, sunt incidunt magnam et. Delectus obcaecati optio eius error libero perferendis nesciunt atque dolores magni recusandae! Doloremque quidem error eum quis similique doloribus natus qui ut ipsum.Velit quos ipsa exercitationem, vel unde obcaecati impedit eveniet non. ”</p>
+
+                                <cite>
+                                    Victoria Ventura
+                                    <span>Customer</span>
+                                </cite>
+                            </blockquote><!-- End .testimonial -->
+                        </div><!-- End .testimonials-slider owl-carousel -->
+                    </div><!-- End .container -->
+                </div><!-- End .bg-light-2 pt-5 pb-6 -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        <footer class="footer mt-3">
+
+          <div class="footer-middle">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-3 col-md-12">
+                  <div class="widget widget-about">
+                    <img src="{% static 'images/demos/demo-24/logo.png' %}" class="footer-logo" alt="Footer Logo"
+                      width="110" height="25">
+                    <p>This is the best Second Hand booked selling Website.There are the best and top quality books. </p>
+    
+                    <div class="social-icons">
+                      <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                      <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                      <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                      <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                      <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                  </div><!-- End .widget about-widget -->
+                </div><!-- End .col-sm-12 col-lg-3 -->
+    
+                <div class="col-lg-3 col-sm-4 col-md-4">
+                  <div class="widget">
+                    <h4 class="widget-title">useful links</h4><!-- End .widget-title -->
+    
+                    <ul class="widget-list">
+                      <li><a href="/about">About Ecom</a></li>
+                      <li><a href="/">How to shop on Molla</a></li>
+                      <li><a href="/contact">Contact us</a></li>
+                      {% if customer %}
+                      <li><a href="/dashboard">Dashboard</a></li>
+                      {% else %}
+                      <li><a href="/login">Log in</a></li>
+                      {% endif %}
+                    </ul><!-- End .widget-list -->
+                  </div><!-- End .widget -->
+                </div><!-- End .col-sm-4 col-lg-3 -->
+    
+                <div class="col-lg-3 col-sm-4 col-md-4">
+                  <div class="widget">
+                    <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+    
+                    <ul class="widget-list">
+                      <li><a href="/">Payment Methods</a></li>
+                      <li><a href="/">Money-back guarantee!</a></li>
+                      <li><a href="/">Free Shipping</a></li>
+                      <li><a href="/">Terms and conditions</a></li>
+                      <li><a href="/">Privacy Policy</a></li>
+                    </ul><!-- End .widget-list -->
+                  </div><!-- End .widget -->
+                </div><!-- End .col-sm-4 col-lg-3 -->
+    
+                <div class="col-lg-3 col-sm-4 col-md-4">
+                  <div class="widget">
+                    <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+    
+                    <ul class="widget-list">
+                      {% if customer %}
+                      <li><a href="/dashboard">Dashboard</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                      {% else %}
+                      <li><a href="/login">Log in</a></li>
+                      {% endif %}
+                      <li><a href="/cart">View Cart</a></li>
+                      <li><a href="#">Track My Order</a></li>
+                      <li><a href="/">Help</a></li>
+                    </ul><!-- End .widget-list -->
+                  </div><!-- End .widget -->
+                </div><!-- End .col-sm-64 col-lg-3 -->
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="container">
+              <p class="footer-copyright">Copyright © 2021 Ecom Store. All Rights Reserved.</p>
+              <!-- End .footer-copyright -->
+    
+              <figure class="footer-payments">
+                <img src="{% static 'images/payments.png' %}" alt="Payment methods" width="272" height="20">
+              </figure><!-- End .footer-payments -->
+    
+            </div><!-- End .widget-about-info -->
+          </div><!-- End .container -->
+      </div><!-- End .footer-bottom -->
+      </footer>
+
+
+    </div><!-- End .page-wrapper -->
+
+    
+  <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+  <div class="mobile-menu-overlay">
+  </div><!-- End .mobil-menu-overlay -->
+  <div class="mobile-menu-container mobile-menu-light">
+    <div class="mobile-menu-wrapper">
+      <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+      <form action="#" method="get" class="mobile-search">
+        <label for="mobile-search" class="sr-only">Search</label>
+        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+          required>
+        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+      </form>
+
+      <nav class="mobile-nav">
+        <ul class="mobile-menu">
+          <li class="active">
+            <a href="index.html">HOME</a>
+          </li>
+          <li>
+            <a href="category.html">Login</a>
+          </li>
+          <li>
+            <a href="about.html">Register</a>
+          </li>
+          <li>
+            <a href="contact.html">CONTACTS</a>
+
+            <ul>
+              <li><a href="contact.html">Contact 01</a></li>
+              <li><a href="contact-2.html">Contact 02</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- End .mobile-nav -->
+
+      <div class="social-icons">
+        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+      </div><!-- End .social-icons -->
+    </div><!-- End .mobile-menu-wrapper -->
+  </div><!-- End .mobile-menu-container -->
+
+
+   <!-- Plugins JS File -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+
+<!-- molla/about.html  22 Nov 2019 10:03:54 GMT -->
+</html>

@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ecom | Booked Order Details </title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Ecom">
+  <meta name="author" content="p-themes">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/icons/site.html' %}">
+  <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+  <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Ecom">
+  <meta name="application-name" content="Ecom">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Plugins CSS File -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/jquery.countdown.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/skins/skin-demo-24.css' %}">
+    <link rel="stylesheet" href="{% static 'css/demos/demo-24.css' %}">
+      <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+      <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+      <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+    </head>
+    
+    <body>
+        <div class="container text-center my-4">
+            <h2>Order Details</h2>
+        </div>
+        <div class="container main px-3 my-3" id="print-container" style="box-shadow: 1px 1px 5px rgba(0,0,0,0.3);">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard/#tab-orders">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+        {% if product_booking %}
+        <div class="container col-sm-6 row">
+            <div class="row mx-2">
+                <div class="col-sm-12 row">
+                    <label>Booking Id</label>
+                    <p class="form-control">{{product_booking.booking_id}}</p>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+            <div class="row mx-2">
+                <div class="col-sm-12 row">
+                    <label>Booking Date</label>
+                    <p class="form-control">{{product_booking.booking_date}}</p>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+            <div class="row mx-2">
+                <div class="col-sm-12 row">
+                    <label>Total Amount</label>
+                    <p class="form-control">{{product_booking.total_amount}}</p>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+            <div class="row mx-2">
+                <div class="col-sm-12 row">
+                    <label>Payment Type</label>
+                    <p class="form-control">{{product_booking.payment_type}}</p>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+            <div class="row mx-2">
+                <div class="col-sm-12 row">
+                    <label>Payment Status</label>
+                    <p class="form-control">{{product_booking.payment_status}}</p>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+            <div class="row mx-2">
+                <div class="col-sm-12 row">
+                    <label>Delivery Status</label>
+                    <p class="form-control">{{product_booking.delivary_status}}</p>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+        </div>
+        
+       <div class="container my-3">
+           <h4>Shipping Details</h4>
+       </div>
+
+       <div class="container col-sm-6 row">
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>Name</label>
+                <p class="form-control">{{product_booking.name}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>email</label>
+                <p class="form-control">{{product_booking.email}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>number</label>
+                <p class="form-control">{{product_booking.number}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>Pincode</label>
+                <p class="form-control">{{product_booking.pincode}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>Country</label>
+                <p class="form-control">{{product_booking.country}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>State</label>
+                <p class="form-control">{{product_booking.state}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>city</label>
+                <p class="form-control">{{product_booking.city}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+        <div class="row mx-2">
+            <div class="col-sm-12 row">
+                <label>Address</label>
+                <p class="form-control">{{product_booking.address}}</p>
+            </div><!-- End .col-sm-6 -->
+        </div><!-- End .row -->
+    </div>
+        
+    <h4 class="my-3">Product Details</h4>
+    <div class="container px-4">
+        <table class="table table-cart table-mobile">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>View Details</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for cart_booked in carts %}
+                <td class="product-col">
+                    <div class="product">
+                        <figure class="product-media">
+                            <a href="/product/{{cart.product.product_slug}}">
+                                {% if cart_booked.product.product_image1 %}
+                                <img src="{{cart_booked.product.product_image1.url}}" alt="Product image">
+                                {% else %}
+                                <img src="{% static 'images/products/table/product-1.jpg' %}" alt="Product image">
+                                {% endif %}
+                            </a>
+                        </figure>
+                        
+                        <h3 class="product-title">
+                            <a href="/product/{{cart_booked.product.product_slug}}">{{cart_booked.product.product_name}}</a>
+                        </h3><!-- End .product-title -->
+                    </div><!-- End .product -->
+                </td>
+                <td class="price-col">Rs. {{cart_booked.product.selling_rate}}</td>
+                <td class="price-col">{{cart_booked.quantity}}</td>
+                <td class="price-col">Rs. {{cart_booked.total_cost}}</td>
+                <td class="price-col">
+                    <a href="/product/{{cart_booked.product.product_slug}}" class="btn btn-outline-primary">View Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table><!-- End .table table-wishlist -->
+
+    </div>
+
+{% endif %}
+</div>
+<div class="container my-4 mb-3" style="display: flex;align-items: center;justify-content: center;">
+    <a href="/generate-pdf/{{product_booking.id}}" style="margin-bottom: 3rem !important;" class="btn btn-primary btn-rounded download-recept">Download Recept</a>
+</div>
+
+<!-- Plugins JS File -->
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/superfish.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+<script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

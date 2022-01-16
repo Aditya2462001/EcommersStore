@@ -1,0 +1,637 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ecom | AdiCreation </title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Ecom">
+  <meta name="author" content="p-themes">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/icons/site.html' %}">
+  <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+  <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Ecom">
+  <meta name="application-name" content="Ecom">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Plugins CSS File -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/jquery.countdown.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+  <!-- Main CSS File -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/skins/skin-demo-24.css' %}">
+  <link rel="stylesheet" href="{% static 'css/demos/demo-24.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+    <style>
+    .owl-carousel .owl-item img 
+    {
+    display: block;
+    width: 250px;
+    height: 300px;
+    }
+    .product-image 
+    {
+      display: block;
+      width: 100%;
+      height: 300px;
+    }
+    .product-image-hover
+    {
+      width: 100% !important;
+      height: 340px !important;
+
+    }
+    @media (min-width: 1200px)
+    {
+        .col-xl-3 {
+            -ms-flex: 0 0 25%;
+            flex: 0 0 25%;
+            max-width: 50%;
+        }
+
+    }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+      <header class="header header-11" style="background:#222;">
+        <div class="header-middle sticky-header">
+          <div class="header-left">
+            <button class="mobile-menu-toggler">
+              <span class="sr-only">Toggle mobile menu</span>
+              <i class="icon-bars"></i>
+            </button>
+
+
+            <!--========================= Main Site Logo ============================== -->
+
+            <a href="/" class="logo">
+              <img src="{% static 'images/demos/demo-24/logo.png' %}" alt="Molla Logo" width="110" height="25">
+            </a>
+          </div><!-- End .header-left -->
+
+          <div class="header-center">
+            <nav class="main-nav">
+              <ul class="menu sf-arrows">
+                <li class="megamenu-container active">
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  {% if customer %}
+                   <a href="/dashboard" style="color:#ffffff">dashboard</a>
+                  {% else %}
+                  <a href="/login" style="color:#ffffff">Login</a>
+                  {% endif %}
+                </li>
+                <li>
+                  <a href="/categories" style="color:#ffffff">All Categories</a>
+                </li>
+                <li>
+                  <a href="#" class="sf-with-ul">About/Contact</a>
+                  <ul>
+                    <li>
+                      <a href="/about">About</a>
+                    </li>
+                    <li>
+                      <a href="/contact">Contact</a>
+                    </li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </li>
+              </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+          </div>
+
+          <div class="header-right">
+            <div class="header-search">
+              <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+              <form action="/search/" method="GET">
+                <div class="header-search-wrapper">
+                  <label for="q" class="sr-only">Search</label>
+                  <input type="search" class="form-control" value="{{search}}" name="search" id="q" placeholder="Search in..." required>
+                </div><!-- End .header-search-wrapper -->
+              </form>
+            </div><!-- End .header-search -->
+            {% comment %} <div class="wishlist">
+              <a href="wishlist.html" title="Wishlist">
+                <i class="icon-heart-o"></i>
+                <span class="wishlist-count">3</span>
+              </a>
+            </div><!-- End .compare-dropdown --> {% endcomment %}
+
+            <div class="dropdown cart-dropdown">
+              <a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" data-display="static">
+                <i class="icon-shopping-cart"></i>
+                  <span class="cart-count">{% if cart_count %}{{cart_count}}{% endif %}</span>
+              </a>
+              {% if customer %}
+                <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-cart-products" id="dropdown-cart-products">
+                    {% if carts %}
+                      {% for cart in carts %}
+                        {% if not cart.booking %}
+                          <div class="product cart-product">
+                            <div class="product-cart-details">
+                              <h4 class="product-title">
+                                <a href="/product/{{cart.product.product_slug}}">{{cart.product.product_name}}</a>
+                              </h4>
+      
+                              <span class="cart-product-info">
+                                <span class="cart-product-qty">{{cart.quantity}}</span>
+                                x Rs. {{cart.product.selling_rate}}
+                              </span>
+                            </div><!-- End .product-cart-details -->
+      
+                            <figure class="product-image-container">
+                              <a href="/product/{{cart.product.product_slug}}" class="product-image">
+                                {% if cart.product.product_image1 %}
+                                <img src="{{cart.product.product_image1.url}}" alt="product">
+                                {% else %}
+                                <img src="{% static 'images/products/cart/product-1.jpg' %}" alt="product">
+                                {% endif %}
+                              </a>
+                            </figure>
+                            <p style="cursor: pointer;" data-id="{{cart.product.id}}" class="btn-remove remove-to-cart-btn" title="Remove Product"><i class="icon-close"></i></p>
+                          </div><!-- End .product -->
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                  </div><!-- End .cart-product -->
+
+                  {% comment %} <div class="dropdown-cart-total">
+                    <span>Total</span>
+
+                    <span class="cart-total-price">$160.00</span>
+                  </div><!-- End .dropdown-cart-total --> {% endcomment %}
+
+                  <div class="dropdown-cart-action">
+                    <a href="/cart" class="btn btn-primary">View Cart</a>
+                    <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                  </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+              {% endif %}
+
+
+            </div><!-- End .cart-dropdown -->
+          </div><!-- End .header-right -->
+        </div><!-- End .header-middle -->
+      </header><!-- End .header -->
+
+
+        
+        
+    
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+        		<div class="container">
+        			<h1 class="page-title">Explore Search Products<span>{{search}}</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+        			<div class="toolbox">
+        				<div class="toolbox-left">
+                            <a href="#" class="sidebar-toggler"><i class="icon-bars"></i>Filters</a>
+        				</div><!-- End .toolbox-left -->
+        			</div><!-- End .toolbox -->
+                    {% if products %}
+                    <div class="products">
+                        <div class="row">
+                            {% for product in products %}
+                                <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <span class="product-label label-new">New</span>
+                                            <a href="/product/{{product.product_slug}}">
+                                                {% if product.product_image1 %}
+                                                    <img src="{{product.product_image1.url}}" alt="Product image" class="product-image">
+                                                {% endif %}
+                                            </a>
+
+                                            {% comment %} <div class="product-action-vertical">
+                                                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                            </div><!-- End .product-action --> {% endcomment %}
+
+                                            <div class="product-action action-icon-top">
+                                                <p style="cursor:pointer" class="btn-product btn-cart add-to-cart-btn"><span>add to cart</span></p>
+                                                <a href="/product/{{product.product_slug}}" class="btn-product" title="Quick view"><span>More Details</span></a>
+                                            </div><!-- End .product-action -->
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <h3 class="product-title"><a href="/product/{{product.product_slug}}">{{product.product_name}}</a></h3><!-- End .product-title -->
+                                            <div class="product-price mt-1">
+                                              Rs. <span class="product-sell-rate">{{product.selling_rate}}</span>  Rs.<del class="product-rate">{{product.rate}}</del>
+                                            </div><!-- End .product-price -->
+                                            <p>Discount <span class="discount-class"></span>%</p>
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: {% widthratio  product.product_rating 1 2 %}0%;"></div><!-- End .ratings-val -->
+                                                </div><!-- End .ratings -->
+                                                <span class="ratings-text">( 0 Reviews )</span>
+                                            </div><!-- End .rating-container -->
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                            {% endfor %}
+                        </div><!-- End .row -->
+
+                        <div class="load-more-container text-center">
+                            <a href="#" class="btn btn-outline-darker btn-load-more">More Products <i class="icon-refresh"></i></a>
+                        </div><!-- End .load-more-container -->
+                    </div><!-- End .products -->
+                    {% endif %}
+
+                    <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
+                    <aside class="sidebar-shop sidebar-filter">
+                        <div class="sidebar-filter-wrapper">
+                            <div class="widget widget-clean">
+                                <label><i class="icon-close"></i>Filters</label>
+                                <a href="#" class="sidebar-filter-clear">Clean All</a>
+                            </div><!-- End .widget -->
+                            <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                                        Categories
+                                    </a>
+                                </h3><!-- End .widget-title -->
+
+                                {% if categories %}
+                                    <div class="collapse show" id="widget-1">
+                                        <div class="widget-body">
+                                            <div class="filter-items filter-items-count">
+                                                {% for category in categories %}
+                                                    <div class="filter-item">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                            <label class="custom-control-label" for="cat-1">{{category.name}}</label>
+                                                        </div><!-- End .custom-checkbox -->
+                                                        {% comment %} <span class="item-count">3</span> {% endcomment %}
+                                                    </div><!-- End .filter-item -->
+                                                {% endfor %}
+                                            </div><!-- End .filter-items -->
+                                        </div><!-- End .widget-body -->
+                                    </div><!-- End .collapse -->
+                                {% endif %}
+
+                            </div><!-- End .widget -->
+
+                            <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
+                                        Price
+                                    </a>
+                                </h3><!-- End .widget-title -->
+
+                                <div class="collapse show" id="widget-5">
+                                    <div class="widget-body">
+                                        <div class="filter-price">
+                                            <div class="filter-price-text">
+                                                Price Range:
+                                                <span id="filter-price-range"></span>
+                                            </div><!-- End .filter-price-text -->
+
+                                            <div id="price-slider"></div><!-- End #price-slider -->
+                                        </div><!-- End .filter-price -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .sidebar-filter-wrapper -->
+                    </aside><!-- End .sidebar-filter -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        
+        
+        </main><!-- End .main -->
+
+        <footer class="footer mt-3">
+
+          <div class="footer-middle">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-3 col-md-12">
+                  <div class="widget widget-about">
+                    <img src="{% static 'images/demos/demo-24/logo.png' %}" class="footer-logo" alt="Footer Logo"
+                      width="110" height="25">
+                    <p>This is the best Second Hand booked selling Website.There are the best and top quality books. </p>
+    
+                    <div class="social-icons">
+                      <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                      <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                      <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                      <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                      <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                  </div><!-- End .widget about-widget -->
+                </div><!-- End .col-sm-12 col-lg-3 -->
+    
+                <div class="col-lg-3 col-sm-4 col-md-4">
+                  <div class="widget">
+                    <h4 class="widget-title">useful links</h4><!-- End .widget-title -->
+    
+                    <ul class="widget-list">
+                      <li><a href="/about">About Ecom</a></li>
+                      <li><a href="/">How to shop on Molla</a></li>
+                      <li><a href="/contact">Contact us</a></li>
+                      {% if customer %}
+                      <li><a href="/dashboard">Dashboard</a></li>
+                      {% else %}
+                      <li><a href="/login">Log in</a></li>
+                      {% endif %}
+                    </ul><!-- End .widget-list -->
+                  </div><!-- End .widget -->
+                </div><!-- End .col-sm-4 col-lg-3 -->
+    
+                <div class="col-lg-3 col-sm-4 col-md-4">
+                  <div class="widget">
+                    <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+    
+                    <ul class="widget-list">
+                      <li><a href="/">Payment Methods</a></li>
+                      <li><a href="/">Money-back guarantee!</a></li>
+                      <li><a href="/">Free Shipping</a></li>
+                      <li><a href="/">Terms and conditions</a></li>
+                      <li><a href="/">Privacy Policy</a></li>
+                    </ul><!-- End .widget-list -->
+                  </div><!-- End .widget -->
+                </div><!-- End .col-sm-4 col-lg-3 -->
+    
+                <div class="col-lg-3 col-sm-4 col-md-4">
+                  <div class="widget">
+                    <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+    
+                    <ul class="widget-list">
+                      {% if customer %}
+                      <li><a href="/dashboard">Dashboard</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                      {% else %}
+                      <li><a href="/login">Log in</a></li>
+                      {% endif %}
+                      <li><a href="/cart">View Cart</a></li>
+                      <li><a href="#">Track My Order</a></li>
+                      <li><a href="/">Help</a></li>
+                    </ul><!-- End .widget-list -->
+                  </div><!-- End .widget -->
+                </div><!-- End .col-sm-64 col-lg-3 -->
+              </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="container">
+              <p class="footer-copyright">Copyright © 2021 Ecom Store. All Rights Reserved.</p>
+              <!-- End .footer-copyright -->
+    
+              <figure class="footer-payments">
+                <img src="{% static 'images/payments.png' %}" alt="Payment methods" width="272" height="20">
+              </figure><!-- End .footer-payments -->
+    
+            </div><!-- End .widget-about-info -->
+          </div><!-- End .container -->
+      </div><!-- End .footer-bottom -->
+      </footer>
+
+
+    </div><!-- End .page-wrapper -->
+
+    
+  <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+  <div class="mobile-menu-overlay">
+  </div><!-- End .mobil-menu-overlay -->
+  <div class="mobile-menu-container mobile-menu-light">
+    <div class="mobile-menu-wrapper">
+      <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+      <form action="#" method="get" class="mobile-search">
+        <label for="mobile-search" class="sr-only">Search</label>
+        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+          required>
+        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+      </form>
+
+      <nav class="mobile-nav">
+        <ul class="mobile-menu">
+          <li class="active">
+            <a href="index.html">HOME</a>
+          </li>
+          <li>
+            <a href="category.html">Login</a>
+          </li>
+          <li>
+            <a href="about.html">Register</a>
+          </li>
+          <li>
+            <a href="contact.html">CONTACTS</a>
+
+            <ul>
+              <li><a href="contact.html">Contact 01</a></li>
+              <li><a href="contact-2.html">Contact 02</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- End .mobile-nav -->
+
+      <div class="social-icons">
+        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+      </div><!-- End .social-icons -->
+    </div><!-- End .mobile-menu-wrapper -->
+  </div><!-- End .mobile-menu-container -->
+
+
+   <!-- Plugins JS File -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+      const add_to_cart_btn = document.querySelectorAll('.add-to-cart-btn');
+      let remove_cart_btn = document.querySelectorAll('.remove-to-cart-btn');
+      let customer = ``;
+      {% if customer %}
+        customer = `{{customer.id}}`;
+      {% endif %}
+      console.log(customer);
+  
+      add_to_cart_btn.forEach((btn) =>
+      {
+        btn.addEventListener('click',(e) =>
+        {
+          $.ajax({
+            url:'/add-to-cart/',
+            method:'POST',
+            data:{
+              productId: btn.getAttribute('data-id'),
+              customerId:customer,
+            },
+            success:(response) =>
+            {
+              if(response.tag == 'success')
+              {
+                alert(response.message);
+                $('.cart-count').text(response.count);
+                let product_data = ` <div class="product cart-product">
+                                      <div class="product-cart-details">
+                                        <h4 class="product-title">
+                                          <a href="/product/${response.cart_list[4]}">${response.cart_list[0]}</a>
+                                        </h4>
+  
+                                        <span class="cart-product-info">
+                                          <span class="cart-product-qty">${response.cart_list[3]}</span>
+                                          x Rs. ${response.cart_list[2]}
+                                        </span>
+                                      </div><!-- End .product-cart-details -->
+  
+                                      <figure class="product-image-container">
+                                        <a href="/product/${response.cart_list[4]}" class="product-image">
+                                          <img src="${response.cart_list[1]}" alt="product">
+                                        </a>
+                                      </figure>
+                                      <p class="btn-remove remove-to-cart-btn" data-id="${response.cart_list[5]}" style="cursor:pointer;" title="Remove Product"><i class="icon-close"></i></p>
+                                    </div><!-- End .product -->`;
+  
+                $('#dropdown-cart-products').append(product_data);
+  
+                remove_cart_btn = document.querySelectorAll('.remove-to-cart-btn');
+                remove_cart_btn.forEach((btn,index) =>
+                {
+                  btn.addEventListener('click',(e) =>
+                  {
+                    console.log('btn clicked');
+                    $.ajax({
+                      url:'/remove-to-cart/',
+                      method:'POST',
+                      data:{
+                        productId: btn.getAttribute('data-id'),
+                        customerId:customer,
+                      },
+                      success:(response) =>
+                      {
+                        if(response.tag == 'success')
+                        {
+                          alert(response.message);
+                          $('.cart-count').text(response.count);
+                          let all_carts = document.querySelectorAll('.cart-product');
+                          all_carts.forEach((crt,c_i) =>
+                          {
+                            if(c_i === index)
+                            {
+                            crt.style.display = 'none';
+                            }
+                          })
+  
+                        }
+                        else if(response.tag == 'fail')
+                        {
+                          alert(response.message);
+                        }
+                      }
+                    })
+                  })
+                })
+                
+  
+              }
+              else if(response.tag == 'fail')
+              {
+                alert(response.message);
+              }
+            }
+          })
+        })
+      })
+  
+  
+      remove_cart_btn.forEach((btn,index) =>
+      {
+        btn.addEventListener('click',(e) =>
+        {
+          console.log('btn clicked');
+          $.ajax({
+            url:'/remove-to-cart/',
+            method:'POST',
+            data:{
+              productId: btn.getAttribute('data-id'),
+              customerId:customer,
+            },
+            success:(response) =>
+            {
+              if(response.tag == 'success')
+              {
+                alert(response.message);
+                $('.cart-count').text(response.count);
+                let all_carts = document.querySelectorAll('.cart-product');
+                all_carts.forEach((crt,c_i) =>
+                {
+                  if(c_i === index)
+                  {
+                   crt.style.display = 'none';
+                  }
+                })
+  
+              }
+              else if(response.tag == 'fail')
+              {
+                alert(response.message);
+              }
+            }
+          })
+        })
+      });
+
+    const product_sell_rate = document.querySelectorAll('.product-sell-rate');
+    const product_rate = document.querySelectorAll('.product-rate');
+    const discount_class = document.querySelectorAll('.discount-class');
+
+
+    product_sell_rate.forEach((psr,index) =>
+    {
+      let discount;
+
+      discount = ((parseInt(product_rate[index].innerHTML) - parseInt(psr.innerHTML))*100)/parseInt(product_rate[index].innerHTML);
+
+
+      discount_class[index].innerHTML = discount.toFixed(2) ;
+    })
+      
+      
+    </script>
+  </body>
+
+</html>

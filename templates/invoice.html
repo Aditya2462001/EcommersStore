@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        @font-face {
+            font-family: 'IBM Plex Sans';
+            src: url(IBMPlexSans-Regular.woff)
+        }
+
+        body {
+            font-size: 0.75rem;
+            line-height: 1.6em;
+            font-family: 'IBM Plex Sans', sans-serif;
+            color: #142132;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 100;
+            color: #142132;
+        }
+
+        a {
+            color: #142132;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #4537DE;
+            text-decoration: none;
+        }
+
+        .header {
+            height: 16rem;
+            vertical-align: top;
+        }
+
+        .header img {
+            padding: 40px 0px;
+            height: 3rem;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .info {
+            width: calc(33% - 2rem);
+            border-top: 1px solid #717885;
+            margin-right: 2rem;
+            padding-top: .25rem;
+        }
+
+        .invoice-box {
+            width: 67%;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: right;
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr td:nth-child(1) {
+            text-align: left;
+        }
+
+        .invoice-box table tr.heading td {
+            border-bottom: 1px solid #717885;
+            border-top: 1px solid #717885;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: .65rem;
+            height: 1.8rem;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px dotted #717885;
+            padding: 0.25rem 0 1rem 0;
+        }
+
+        .invoice-box table tr:nth-last-child(-n+2) td {
+            border-bottom: 0px;
+            padding: 0.25rem 0 1rem 0;
+        }
+
+        .invoice-box table tr.total td {
+            border-top: 1px solid #717885;
+            padding: 0.75rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .notes {
+            width: 50%;
+        }
+
+        .company-info {
+            margin-top: 10rem;
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .company-info-item {
+            width: calc(33% - 1rem);
+            padding-right: 1rem;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding-top: 1rem;
+        }
+
+        .label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: .65rem;
+        }
+
+        .form-border {
+            padding: 10px 0px;
+            border-top: 1px solid #717885;
+            border-bottom: 1px solid #717885;
+            border-left: none;
+            border-right: none;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 0.75rem;
+            line-height: 1.6em;
+        }
+
+        .form-border:hover {
+            border-bottom: 1px solid #4537DE;
+            border-top: 1px solid #4537DE;
+        }
+
+        .form-border:focus-visible {
+            padding: 10px;
+        }
+
+        .signature {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="{% static 'images/demos/demo-24/logo.png' %}">
+    </div>
+
+    <div class="title">
+        <h1>Invoice</h1>
+    </div>
+
+    <div class="content">
+        <div class="info">
+            <p>
+                Booking No.: {{product_booking.booking_id}}<br>
+                Booking Date: {{product_booking.booking_date}}<br>
+            </p>
+            <p class="label">Customer: {{product_booking.customer.name}}</p>
+
+            <p class="label">Customer Address:</p>
+            <p> {{product_booking.address}} <br/> state : {{product_booking.state}} <br> City : {{product_booking.city}} <br> {{product_booking.pincode}}</p>
+            <br/>
+            <p class="label">Sender Address:</p>
+            <p>
+                Company name <br>
+                3643 Viking Drive<br>
+                1234 Vienna<br>
+                VAT No.: AT U12345678
+            </p>
+        </div>
+
+        <div class="invoice-box">
+            <table cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr class="heading">
+                        <td>Books</td>
+                        <td>QTY</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                    </tr>
+
+                    {% if carts %}
+                    {% for cart in carts %}
+                        <tr class="item">
+                            <td>{{cart.product.product_name}}</td>
+                            <td>{{cart.quantity}}</td>
+                            <td>Rs.{{cart.product.selling_rate}} </td>
+                            <td>Rs. {{cart.total_cost}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endif %}
+
+                    <tr class="item">
+                        <td>Shipping Costs</td>
+                        <td>1</td>
+                        <td>Rs. 0</td>
+                        <td>Rs. 0,00 </td>
+                    </tr>
+
+                    <tr class="total">
+                        <td>Total</td>
+                        <td></td>
+                        <td></td>
+                        <td>Rs. {{product_booking.total_amount}} </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="notes">
+                <strong>Payment type : {{product_booking.payment_type}}</strong>
+                <p>{% if product_booking.payment_type == 'cash-on-delivary' %}
+                    Take payment while delivery. and update Status
+                    {% else %}
+                    payment Is Done. Not Take any payment while delivery.
+                    {% endif %}</p>
+
+                <div class="signature">
+                    <label for="signed-off" class="label">Invoice prepared by:</label>
+                    <input type="text" id="signed-off" class="form-border" value="Ecoms">
+                </div>
+            </div>
+
+            <div class="company-info">
+                <div class="company-info-item">
+                    <p>
+                        <br>
+                        <a href="https://pspdfkit.com/">www.ecom.com</a><br>
+                        <a href="mailto:sales@pspdfkit.com">sales@ecom.com</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        print();
+    </script>
+</body>
+</html>

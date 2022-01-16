@@ -1,0 +1,611 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Ecom | Cart </title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="keywords" content="HTML5 Template">
+  <meta name="description" content="Ecom">
+  <meta name="author" content="p-themes">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/icons/site.html' %}">
+  <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+  <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Ecom">
+  <meta name="application-name" content="Ecom">
+  <meta name="msapplication-TileColor" content="#cc9966">
+  <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Plugins CSS File -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/jquery.countdown.css' %}">
+  <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/skins/skin-demo-24.css' %}">
+    <link rel="stylesheet" href="{% static 'css/demos/demo-24.css' %}">
+      <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+      <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+      <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+</head>
+
+<body>
+    <div class="page-wrapper">
+      <header class="header header-11" style="background:#222;">
+        <div class="header-middle sticky-header">
+          <div class="header-left">
+            <button class="mobile-menu-toggler">
+              <span class="sr-only">Toggle mobile menu</span>
+              <i class="icon-bars"></i>
+            </button>
+
+
+            <!--========================= Main Site Logo ============================== -->
+
+            <a href="/" class="logo">
+              <img src="{% static 'images/demos/demo-24/logo.png' %}" alt="Molla Logo" width="110" height="25">
+            </a>
+          </div><!-- End .header-left -->
+
+          <div class="header-center">
+            <nav class="main-nav">
+              <ul class="menu sf-arrows">
+                <li class="megamenu-container active">
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  {% if customer %}
+                   <a href="/dashboard" style="color:#ffffff">dashboard</a>
+                  {% else %}
+                  <a href="/login" style="color:#ffffff">Login</a>
+                  {% endif %}
+                </li>
+                <li>
+                  <a href="/categories" style="color:#ffffff">All Categories</a>
+                </li>
+                <li>
+                  <a href="#" class="sf-with-ul">About/Contact</a>
+                  <ul>
+                    <li>
+                      <a href="/about">About</a>
+                    </li>
+                    <li>
+                      <a href="/contact">Contact</a>
+                    </li>
+                    <li><a href="/logout">Logout</a></li>
+                  </ul>
+                </li>
+              </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+          </div>
+
+          <div class="header-right">
+            <div class="header-search">
+              <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+              <form action="/search/" method="GET">
+                <div class="header-search-wrapper">
+                  <label for="q" class="sr-only">Search</label>
+                  <input type="search" class="form-control" name="search" id="q" placeholder="Search in..." required>
+                </div><!-- End .header-search-wrapper -->
+              </form>
+            </div><!-- End .header-search -->
+            {% comment %} <div class="wishlist">
+              <a href="wishlist.html" title="Wishlist">
+                <i class="icon-heart-o"></i>
+                <span class="wishlist-count">3</span>
+              </a>
+            </div><!-- End .compare-dropdown --> {% endcomment %}
+
+            <div class="dropdown cart-dropdown">
+              <a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" data-display="static">
+                <i class="icon-shopping-cart"></i>
+                  <span class="cart-count">{% if cart_count %}{{cart_count}}{% endif %}</span>
+              </a>
+              {% if customer %}
+                <div class="dropdown-menu dropdown-menu-right">
+                  <div class="dropdown-cart-products" id="dropdown-cart-products">
+                    {% if carts %}
+                      {% for cart in carts %}
+                        {% if not cart.booking %}
+                          <div class="product cart-product">
+                            <div class="product-cart-details">
+                              <h4 class="product-title">
+                                <a href="/product/{{cart.product.product_slug}}">{{cart.product.product_name}}</a>
+                              </h4>
+      
+                              <span class="cart-product-info">
+                                <span class="cart-product-qty">{{cart.quantity}}</span>
+                                x Rs. {{cart.product.selling_rate}}
+                              </span>
+                            </div><!-- End .product-cart-details -->
+      
+                            <figure class="product-image-container">
+                              <a href="/product/{{cart.product.product_slug}}" class="product-image">
+                                {% if cart.product.product_image1 %}
+                                <img src="{{cart.product.product_image1.url}}" alt="product">
+                                {% else %}
+                                <img src="{% static 'images/products/cart/product-1.jpg' %}" alt="product">
+                                {% endif %}
+                              </a>
+                            </figure>
+                            <p style="cursor: pointer;" data-id="{{cart.product.id}}" class="btn-remove remove-to-cart-btn" title="Remove Product"><i class="icon-close"></i></p>
+                          </div><!-- End .product -->
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+
+                  </div><!-- End .cart-product -->
+
+                  {% comment %} <div class="dropdown-cart-total">
+                    <span>Total</span>
+
+                    <span class="cart-total-price">$160.00</span>
+                  </div><!-- End .dropdown-cart-total --> {% endcomment %}
+
+                  <div class="dropdown-cart-action">
+                    <a href="/cart" class="btn btn-primary">View Cart</a>
+                    <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                  </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+              {% endif %}
+
+
+            </div><!-- End .cart-dropdown -->
+          </div><!-- End .header-right -->
+        </div><!-- End .header-middle -->
+      </header><!-- End .header -->
+      
+
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+        		<div class="container">
+        			<h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Cart</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+            	<div class="cart">
+	                <div class="container">
+	                	<div class="row">
+	                		<div class="col-lg-9">
+	                			<table class="table table-cart table-mobile">
+									<thead>
+										<tr>
+											<th>Product</th>
+											<th>Price</th>
+											<th>Quantity</th>
+											<th>Total</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+                                        {% if carts %}
+                                        {% for cart in carts %}
+                                            <tr class="all-cart-products">
+                                                <td class="product-col">
+                                                    <div class="product">
+                                                        <figure class="product-media">
+                                                            <a href="/product/{{cart.product.product_slug}}">
+                                                                {% if cart.product.product_image1 %}
+                                                                <img src="{{cart.product.product_image1.url}}" alt="Product image">
+                                                                {% else %}
+                                                                <img src="{% static 'images/products/table/product-1.jpg' %}" alt="Product image">
+                                                                {% endif %}
+                                                            </a>
+                                                        </figure>
+
+                                                        <h3 class="product-title">
+                                                            <a href="/product/{{cart.product.product_slug}}">{{cart.product.product_name}}</a>
+                                                        </h3><!-- End .product-title -->
+                                                    </div><!-- End .product -->
+                                                </td>
+                                                <td class="price-col">Rs. {{cart.product.selling_rate}}</td>
+                                                <td class="quantity-col">
+                                                    <div class="cart-product-quantity">
+                                                        <input type="number" data-id="{{cart.product.id}}" class="form-control product-quantity" 
+                                                        value="{{cart.quantity}}" min="1" max="10" step="1" data-decimals="0" required>
+                                                    </div><!-- End .cart-product-quantity -->
+                                                </td>
+                                                <td class="total-col">Rs. <span class="product-front-cost">{{cart.total_cost}}</span></td>
+                                                <td class="remove-col"><button data-cost="{{cart.total_cost}}" data-id="{{cart.product.id}}" 
+                                                  class="btn-remove remove-from-cart"><i class="icon-close"></i></button></td>
+                                            </tr>
+                                        {% endfor %}
+                                        {% endif %}
+									</tbody>
+								</table><!-- End .table table-wishlist -->
+
+	                		<div class="cart-bottom">
+			            			<a href="/cart" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+		            			</div><!-- End .cart-bottom -->
+
+	                		</div><!-- End .col-lg-9 -->
+	                		<aside class="col-lg-3">
+	                			<div class="summary summary-cart">
+	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
+
+	                				<table class="table table-summary">
+	                					<tbody>
+	                						<tr class="summary-subtotal">
+	                							<td>Subtotal:</td>
+	                							<td>Rs. <span class="sub-total-cart-payment">{{total_pay}}</span></td>
+	                						</tr><!-- End .summary-subtotal -->
+	                						{% comment %} <tr class="summary-shipping">
+	                							<td>Shipping:</td>
+	                							<td>&nbsp;</td>
+	                						</tr> {% endcomment %}
+
+	                						{% comment %} <tr class="summary-shipping-row">
+	                							<td>
+													<div class="custom-control custom-radio">
+														<input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+														<label class="custom-control-label" for="free-shipping">Free Shipping</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>Rs. 0.00</td>
+	                						</tr><!-- End .summary-shipping-row --> {% endcomment %}
+
+	                						{% comment %} <tr class="summary-shipping-row">
+	                							<td>
+	                								<div class="custom-control custom-radio">
+														<input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+														<label class="custom-control-label" for="standart-shipping">Standart:</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>Rs. 10.00</td>
+	                						</tr><!-- End .summary-shipping-row -->
+
+	                						<tr class="summary-shipping-row">
+	                							<td>
+	                								<div class="custom-control custom-radio">
+														<input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+														<label class="custom-control-label" for="express-shipping">Express:</label>
+													</div><!-- End .custom-control -->
+	                							</td>
+	                							<td>Rs. 20.00</td>
+	                						</tr><!-- End .summary-shipping-row -->
+
+	                						<tr class="summary-shipping-estimate">
+	                							<td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
+	                							<td>&nbsp;</td>
+	                						</tr><!-- End .summary-shipping-estimate --> {% endcomment %}
+
+	                						<tr class="summary-total">
+	                							<td>Total:</td>
+	                							<td>Rs. <span class="total-cart-payment">{{total_pay}}</span></td>
+	                						</tr><!-- End .summary-total -->
+	                					</tbody>
+	                				</table><!-- End .table table-summary -->
+
+	                				<a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+	                			</div><!-- End .summary -->
+
+		            			<a href="/categories" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span>
+                        <i class="icon-refresh"></i></a>
+	                		</aside><!-- End .col-lg-3 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .cart -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+  <footer class="footer mt-3">
+            <div class="container service">
+              <div class="row">
+                <div class="col-sm-6 col-lg-3">
+                  <div class="icon-box icon-box-side">
+                    <span class="icon-box-icon">
+                      <i class="icon-rocket"></i>
+                    </span>
+      
+                    <div class="icon-box-content">
+                      <h3 class="icon-box-title">Free Shipping</h3><!-- End .icon-box-title -->
+                      <p>Orders $50 or more</p>
+                    </div><!-- End .icon-box-content -->
+                  </div><!-- End .icon-box -->
+                </div><!-- End .col-sm-6 col-lg-4 -->
+      
+                <div class="col-sm-6 col-lg-3">
+                  <div class="icon-box icon-box-side">
+                    <span class="icon-box-icon">
+                      <i class="icon-rotate-left"></i>
+                    </span>
+      
+                    <div class="icon-box-content">
+                      <h3 class="icon-box-title">Free Returns</h3><!-- End .icon-box-title -->
+                      <p>Within 30 days</p>
+                    </div><!-- End .icon-box-content -->
+                  </div><!-- End .icon-box -->
+                </div><!-- End .col-sm-6 col-lg-4 -->
+      
+                <div class="col-sm-6 col-lg-3">
+                  <div class="icon-box icon-box-side">
+                    <span class="icon-box-icon">
+                      <i class="icon-info-circle"></i>
+                    </span>
+      
+                    <div class="icon-box-content">
+                      <h3 class="icon-box-title">Get 20% Off 1 Item</h3><!-- End .icon-box-title -->
+                      <p>When you sign up</p>
+                    </div><!-- End .icon-box-content -->
+                  </div><!-- End .icon-box -->
+                </div><!-- End .col-sm-6 col-lg-4 -->
+      
+                <div class="col-sm-6 col-lg-3">
+                  <div class="icon-box icon-box-side">
+                    <span class="icon-box-icon">
+                      <i class="icon-life-ring"></i>
+                    </span>
+      
+                    <div class="icon-box-content">
+                      <h3 class="icon-box-title">We Support</h3><!-- End .icon-box-title -->
+                      <p>24/7 amazing services</p>
+                    </div><!-- End .icon-box-content -->
+                  </div><!-- End .icon-box -->
+                </div><!-- End .col-sm-6 col-lg-4 -->
+              </div>
+            </div>
+      
+            <div class="footer-middle">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-3 col-md-12">
+                    <div class="widget widget-about">
+                      <img src="{% static 'images/demos/demo-24/logo.png' %}" class="footer-logo" alt="Footer Logo"
+                        width="110" height="25">
+                      <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu
+                        erat. </p>
+      
+                      <div class="social-icons">
+                        <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                      </div><!-- End .soial-icons -->
+                    </div><!-- End .widget about-widget -->
+                  </div><!-- End .col-sm-12 col-lg-3 -->
+      
+                  <div class="col-lg-3 col-sm-4 col-md-4">
+                    <div class="widget">
+                      <h4 class="widget-title">useful links</h4><!-- End .widget-title -->
+      
+                      <ul class="widget-list">
+                        <li><a href="about.html">About Molla</a></li>
+                        <li><a href="#">How to shop on Molla</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="contact.html">Contact us</a></li>
+                        <li><a href="login.html">Log in</a></li>
+                      </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                  </div><!-- End .col-sm-4 col-lg-3 -->
+      
+                  <div class="col-lg-3 col-sm-4 col-md-4">
+                    <div class="widget">
+                      <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+      
+                      <ul class="widget-list">
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Money-back guarantee!</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Terms and conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                      </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                  </div><!-- End .col-sm-4 col-lg-3 -->
+      
+                  <div class="col-lg-3 col-sm-4 col-md-4">
+                    <div class="widget">
+                      <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+      
+                      <ul class="widget-list">
+                        <li><a href="#">Sign In</a></li>
+                        <li><a href="cart.html">View Cart</a></li>
+                        <li><a href="#">My Wishlist</a></li>
+                        <li><a href="#">Track My Order</a></li>
+                        <li><a href="#">Help</a></li>
+                      </ul><!-- End .widget-list -->
+                    </div><!-- End .widget -->
+                  </div><!-- End .col-sm-64 col-lg-3 -->
+                </div>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <div class="container">
+                <p class="footer-copyright">Copyright © 2021 Ecom Store. All Rights Reserved.</p>
+                <!-- End .footer-copyright -->
+      
+                <figure class="footer-payments">
+                  <img src="{% static 'images/payments.png' %}" alt="Payment methods" width="272" height="20">
+                </figure><!-- End .footer-payments -->
+      
+              </div><!-- End .widget-about-info -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+  </footer>
+
+
+    </div><!-- End .page-wrapper -->
+
+    
+  <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+  <div class="mobile-menu-overlay">
+  </div><!-- End .mobil-menu-overlay -->
+  <div class="mobile-menu-container mobile-menu-light">
+    <div class="mobile-menu-wrapper">
+      <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+      <form action="#" method="get" class="mobile-search">
+        <label for="mobile-search" class="sr-only">Search</label>
+        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+          required>
+        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+      </form>
+
+      <nav class="mobile-nav">
+        <ul class="mobile-menu">
+          <li class="active">
+            <a href="index.html">HOME</a>
+          </li>
+          <li>
+            <a href="category.html">Login</a>
+          </li>
+          <li>
+            <a href="about.html">Register</a>
+          </li>
+          <li>
+            <a href="contact.html">CONTACTS</a>
+
+            <ul>
+              <li><a href="contact.html">Contact 01</a></li>
+              <li><a href="contact-2.html">Contact 02</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- End .mobile-nav -->
+
+      <div class="social-icons">
+        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+      </div><!-- End .social-icons -->
+    </div><!-- End .mobile-menu-wrapper -->
+  </div><!-- End .mobile-menu-container -->
+
+    <!-- Plugins JS File -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <script>
+
+      const remove_cart_btn = document.querySelectorAll('.remove-from-cart');
+      const increase_quantities = document.querySelectorAll('.product-quantity');
+
+      let customer = ``;
+
+      {% if customer %}
+        customer = `{{customer.id}}`;
+      {% endif %}
+
+
+      increase_quantities.forEach((incQ,index) =>
+      {
+        incQ.addEventListener('change',(e) =>
+        {
+          console.log(e.target.value);
+           if(e.target.value >= 1)
+           {
+              $.ajax({
+              url:'/increase-quantity/',
+              method:'POST',
+              data:{
+                productId: incQ.getAttribute('data-id'),
+                customerId:customer,
+                quantity:e.target.value
+              },
+              success:(response) =>
+              {
+                if(response.tag == 'success')
+                {
+                  let total_cost = document.querySelector('.total-cart-payment');
+
+                  let sub_total_cost = document.querySelector('.sub-total-cart-payment');
+
+                  let product_front_cost = document.querySelectorAll('.product-front-cost');
+
+                  total_cost.textContent = response.total_payment;
+
+                  sub_total_cost.textContent = response.total_payment;
+
+                  product_front_cost[index].textContent =  response.product_total;
+
+                }
+                else if(response.tag == 'fail')
+                {
+                  alert(response.message);
+                }
+              }
+            })
+
+           }
+
+        })
+
+      })
+
+      remove_cart_btn.forEach((btn,index) =>
+      {
+        btn.addEventListener('click',(e) =>
+        {
+          console.log('btn clicked');
+          $.ajax({
+            url:'/remove-to-cart/',
+            method:'POST',
+            data:{
+              productId: btn.getAttribute('data-id'),
+              customerId:customer,
+            },
+            success:(response) =>
+            {
+              if(response.tag == 'success')
+              {
+                alert(response.message);
+                $('.cart-count').text(response.count);
+                let all_carts = document.querySelectorAll('.all-cart-products');
+                all_carts.forEach((crt,c_i) =>
+                {
+                  if(c_i === index)
+                  {
+                  crt.style.display = 'none';
+                  }
+                })
+                let total_cost = document.querySelector('.total-cart-payment');
+                let sub_total_cost = document.querySelector('.sub-total-cart-payment');
+                total_cost.textContent = parseInt(total_cost.textContent) - parseInt(btn.getAttribute('data-cost')) ;
+                sub_total_cost.textContent = parseInt(sub_total_cost.textContent) - parseInt(btn.getAttribute('data-cost')) ;
+
+              }
+              else if(response.tag == 'fail')
+              {
+                alert(response.message);
+              }
+            }
+          })
+        })
+      })
+      
+    </script>
+</body>
+
+</html>
