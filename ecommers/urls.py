@@ -38,6 +38,8 @@ urlpatterns = [
     path('login/',views.LoginView,name="login"),
     path('logout/',views.LogoutView,name="logout"),
     path('register/',views.Register,name="register"),
+    path('verify-otp/',views.VerifyOtp,name="verifyotp"),
+    path('recent-otp/',views.RecentOtp,name="resent-otp"),
     path('dashboard/',views.DashBoard,name="DashBoard"),
     path('edit-profile/',views.EditProfile,name="edit-profile"),
     path('dashboard/order/<str:id>',views.EachBookingDetails,name="booking-details"),
@@ -47,4 +49,7 @@ urlpatterns = [
 
 
     # ========================== Payment ======================================
+
+
+    path('career/',views.Career,name="career"),
 ]

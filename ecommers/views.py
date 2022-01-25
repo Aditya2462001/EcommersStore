@@ -1,3 +1,5 @@
+import imp
+import random
 from django.shortcuts import redirect, render
 from django.http.response import HttpResponse, JsonResponse,HttpResponseBadRequest
 from collections import namedtuple
@@ -17,6 +19,8 @@ import pdfkit
 import os
 from django.template.loader import get_template 
 
+from django.core.mail import send_mail,EmailMessage
+
 
 
 # payment authorization 
@@ -29,14 +33,24 @@ def Home(request):
     customer = None
     carts = None
     cart_count =None
+    programming_product = None
+    love_books = None
+    biography_books = None
     prod = []
-    category = Category.objects.get(name = 'Programming')
-    programming_product = Products.objects.filter(category = category.id)
+    if Category.objects.filter(name = 'Programming').exists():
+        category = Category.objects.get(name = 'Programming')
+        programming_product = Products.objects.filter(category = category.id)
+    
+
+    if Category.objects.filter(name = 'Love').exists():
+        category = Category.objects.get(name = 'Love')
+        love_books = Products.objects.filter(category = category.id)
+    
+    if Category.objects.filter(name = 'Biography').exists():
+        category = Category.objects.get(name = 'Biography')
+        biography_books = Products.objects.filter(category = category.id)
+
     products = Products.objects.all()
-    category = Category.objects.get(name = 'Love')
-    love_books = Products.objects.filter(category = category.id)
-    category = Category.objects.get(name = 'Biography')
-    biography_books = Products.objects.filter(category = category.id)
     categories = Category.objects.all()
     if request.user.is_active:
         if Customer.objects.filter(user = request.user).exists():
@@ -49,9 +63,6 @@ def Home(request):
     for c in categories:
         if Products.objects.filter(category = c.id).exists():
             prod.append(Products.objects.filter(category = c.id).first())
-
-    
-    print(customer)
 
     context = {
         'products':products,
@@ -224,7 +235,8 @@ def ViewProduct(request,slug):
         'product':product,
         'carts':carts,
         'cart_count':cart_count,
-        'products':products
+        'products':products,
+        'customer':customer
     }
     return render(request,'product.html',context)
 
@@ -501,8 +513,20 @@ def LoginView(request):
         user = authenticate(username = email,password = password)
         if user is not None:
             if user.is_active:
-                login(request,user)
-                return redirect('/')
+                customer = Customer.objects.get(user = user)
+                if customer.verify_email:
+                    login(request,user)
+                    return redirect('/')
+                else: 
+                    request.session['email'] = customer.email 
+                    mail_body = f'Hello {customer.name}, \n welcome to Ecom store web App. \n for verification her is your otp {customer.otp}.\n enjoy the journey.'
+
+
+                    mail = EmailMessage(subject='Account Verification',body=mail_body,from_email=settings.EMAIL_HOST_USER,to=[customer.email,])
+                    mail.send()
+
+                    messages.success(request,'You account is created please verify the email! opt sended in your mail id.')
+                    return redirect('/verify-otp/') 
         else:
             messages.info(request,'Cradentials is wrong Try Again !')
             return redirect('/login')
@@ -534,20 +558,72 @@ def Register(request):
         user.set_password(password)
         user.save()
 
-        customer = Customer(user = user ,name = name,email = email,number = number)
-        customer.save()
-        print('user is register successfully')
+        otp = str(random.randint(10000,99999))
+        if Customer.objects.filter(otp = otp).exists():
+            otp = str(random.randint(10000,99999))
 
-        messages.success(request,'You account is created')
-        return redirect('/login')
+        customer = Customer(user = user ,name = name,email = email,number = number,otp = otp)
+        customer.save()
+
+        request.session['email'] = email 
+
+        mail_body = f'Hello {name}, \n welcome to Ecom store web App. \n for verification her is your otp {otp}.\n enjoy the journey.'
+
+
+        mail = EmailMessage(subject='Account Verification',body=mail_body,from_email=settings.EMAIL_HOST_USER,to=[email,])
+        mail.send()
+
+        messages.success(request,'You account is created please verify the email! opt sended in your mail id.')
+
+        return redirect('/verify-otp/')
+
 
 # ======================= Customer userpanal =================================
+
+def VerifyOtp(request):
+    email = request.session['email']
+    if email:
+        customer = Customer.objects.get(email = email)
+        otp = None
+        if request.method == 'POST':
+            otp = request.POST.get('otp')
+        if otp == customer.otp:
+            customer.verify_email = True
+            customer.save()
+            request.session['email'] = ''
+            messages.success(request,'email is verify!')
+            return redirect('/login')
+        
+        return render(request,'otp.html',{'email':email})
+
+    else:
+        return redirect('/login')
+
+@csrf_exempt
+def RecentOtp(request):
+    email = request.session['email']
+    if email:
+        customer = Customer.objects.get(email = email)
+        mail_body = f'Hello {customer.name}, \n welcome to Ecom store web App. \n for verification her is your otp {customer.otp}.\n enjoy the journey.'
+
+        mail = EmailMessage(
+        subject='Account Verification',
+        body=mail_body,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[email,]
+        )
+        mail.send()
+        return JsonResponse({'data':'Otp sended to your mail id'})
+    else:
+        return JsonResponse({'data':'time out for otp'})
+
 
 def DashBoard(request):
     customer = None
     carts = None
     cart_count = None
     product_booking = None
+    recent_booking_product = None
     prod_count = []
     if request.user.is_active:
         if Customer.objects.filter(user = request.user).exists():
@@ -562,7 +638,8 @@ def DashBoard(request):
                 prod_count.append({'id':p_b.id,'product_count':len(p_b.cart.all())})
 
             recent_booking = ProductBooking.objects.filter(customer = customer,booking_status = True).last()
-            recent_booking_product = recent_booking.cart.all()
+            if recent_booking:
+                recent_booking_product = recent_booking.cart.all()
             
 
             return_requests = ProductRequest.objects.filter(customer = customer)
@@ -765,3 +842,6 @@ def AboutUs(request):
 
 
 
+
+def Career(request):
+    return render(request,'file name  ',{})

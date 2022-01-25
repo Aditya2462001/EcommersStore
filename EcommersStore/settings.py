@@ -124,3 +124,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RAZOR_KEY_ID = 'rzp_test_3OaAlzATkeLNL4'
 RAZOR_KEY_SECRET = 'kiZemdFyjfYFzXTJ9KS8DHhQ'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ecomstore.aditya@gmail.com'
+EMAIL_HOST_PASSWORD = 'bjozpbrdryrrctyn'

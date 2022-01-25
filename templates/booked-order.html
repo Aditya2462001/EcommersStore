@@ -210,6 +210,14 @@
 <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  {% if messages %}
+    {% for message in messages %}
+    Swal.fire(`{{message}}`,'Ecom','{{message.tags}}');
+    {% endfor %}
+  {% endif %}
+</script>
 </body>
 
 </html>

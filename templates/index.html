@@ -65,7 +65,7 @@
             <!--========================= Main Site Logo ============================== -->
 
             <a href="/" class="logo">
-              <img src="{% static 'images/demos/demo-24/logo.png' %}" alt="Molla Logo" width="110" height="25">
+              <img src="{% static 'images/logo.png' %}" alt="Molla Logo" width="110" height="25">
             </a>
           </div><!-- End .header-left -->
 
@@ -250,7 +250,11 @@
             {% if categorires %}
                     {% for category in categorires %}
                       <a href="/category/{{category.name}}" class="brand" style="display:flex;flex-direction:column;">
+                        {% if category.image %}
+                        <img src="{{category.image.url}}" style="width:400px;height: 100px;" alt="Brand Name">
+                        {% else %}
                         <img src="{% static 'images/demos/demo-24/brands/1.png' %}" style="width:200px;height: 50px;" alt="Brand Name">
+                        {% endif %}
                         {{category.name|title}}
                       </a>
                     {% endfor %}
@@ -404,13 +408,13 @@
           <div class="col-sm-6 col-lg-4">
             <div class="banner">
               <a href="#">
-                <img src="{% static 'images/banners/grid/4cols/banner-1.jpg' %}" alt="Banner">
+                <img src="{% static 'images/biography.jpg' %}" alt="Banner">
               </a>
 
               <div class="banner-content">
-                <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
-                <h3 class="banner-title">Phasellus <br>ultrices nulla.</h3><!-- End .banner-title -->
-                <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+                <h4 class="banner-subtitle">Best Biography</h4><!-- End .banner-subtitle -->
+                <h3 class="banner-title">See All Biography</h3><!-- End .banner-title -->
+                <a href="/category/Biography" class="btn btn-primary btn-rounded">Shop Now</a>
               </div><!-- End .banner-content -->
             </div><!-- End .banner -->
           </div><!-- End .col-lg-4 -->
@@ -418,13 +422,13 @@
           <div class="col-sm-6 col-lg-4 order-lg-last">
             <div class="banner">
               <a href="#">
-                <img src="{% static 'images/banners/grid/4cols/banner-4.jpg' %}" alt="Banner">
+                <img src="{% static 'images/love.jpg' %}" alt="Banner">
               </a>
 
               <div class="banner-content">
-                <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
-                <h3 class="banner-title text-white">Donec consectetuer <br>ligula vulputate.</h3><!-- End .banner-title -->
-                <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+                <h4 class="banner-subtitle">Feel the love</h4><!-- End .banner-subtitle -->
+                <h3 class="banner-title text-white">Explore all  <br>Love bookes</h3><!-- End .banner-title -->
+                <a href="/category/Love" class="btn btn-primary btn-rounded">Shop Now</a>
               </div><!-- End .banner-content -->
             </div><!-- End .banner -->
               </div><!-- End .col-lg-4 -->
@@ -434,27 +438,27 @@
                       <div class="col-sm-6 col-lg-12">
                     <div class="banner">
                       <a href="#">
-                        <img src="{% static 'images/banners/grid/4cols/banner-2.jpg' %}" alt="Banner">
+                        <img src="{% static 'images/programming.jpg' %}" alt="Banner">
                       </a>
 
                       <div class="banner-content">
-                        <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
-                        <h3 class="banner-title">Phasellus <br>ultrices nulla.</h3><!-- End .banner-title -->
-                        <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+                        <h4 class="banner-subtitle">Your are a programmer</h4><!-- End .banner-subtitle -->
+                        <h3 class="banner-title">See All <br>Programming Books.</h3><!-- End .banner-title -->
+                        <a href="/category/Programming" class="btn btn-primary btn-rounded">Shop Now</a>
                       </div><!-- End .banner-content -->
                     </div><!-- End .banner -->
-                      </div><!-- End .col-sm-6 col-lg-12 -->
+                </div><!-- End .col-sm-6 col-lg-12 -->
 
                   <div class="col-sm-6 col-lg-12">
                     <div class="banner">
                       <a href="#">
-                        <img src="{% static 'images/banners/grid/4cols/banner-3.jpg' %}" alt="Banner">
+                        <img src="{% static 'images/horror.jpg' %}" alt="Banner">
                       </a>
 
                       <div class="banner-content">
-                        <h4 class="banner-subtitle">Quisque a lectus</h4><!-- End .banner-subtitle -->
-                        <h3 class="banner-title text-white">Donec consectetuer <br>ligula vulputate.</h3><!-- End .banner-title -->
-                        <a href="#" class="btn btn-primary btn-rounded">Shop Now</a>
+                        <h4 class="banner-subtitle">love you read Horros books</h4><!-- End .banner-subtitle -->
+                        <h3 class="banner-title text-white">Descover and buy <br>Horror books</h3><!-- End .banner-title -->
+                        <a href="/category/horror" class="btn btn-primary btn-rounded">Shop Now</a>
                       </div><!-- End .banner-content -->
                     </div><!-- End .banner -->
                   </div><!-- End .col-sm-6 col-lg-12 -->
@@ -758,7 +762,7 @@
           <div class="row">
             <div class="col-lg-3 col-md-12">
               <div class="widget widget-about">
-                <img src="{% static 'images/demos/demo-24/logo.png' %}" class="footer-logo" alt="Footer Logo"
+                <img src="{% static 'images/logo.png' %}" class="footer-logo" alt="Footer Logo"
                   width="110" height="25">
                 <p>This is the best Second Hand booked selling Website.There are the best and top quality books. </p>
 
@@ -846,9 +850,9 @@
     <div class="mobile-menu-wrapper">
       <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
-      <form action="#" method="get" class="mobile-search">
+      <form action="/search/" method="GET" class="mobile-search">
         <label for="mobile-search" class="sr-only">Search</label>
-        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+        <input type="search" class="form-control" name="search" id="mobile-search" placeholder="Search in..."
           required>
         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
       </form>
@@ -856,21 +860,31 @@
       <nav class="mobile-nav">
         <ul class="mobile-menu">
           <li class="active">
-            <a href="index.html">HOME</a>
+            <a href="/">Home</a>
+          </li>
+          <li class="active">
+            <a href="/categories">Categories</a>
+          </li>
+          {% if request.user.is_active %}
+          <li>
+            <a href="/dashboard">Dashboard</a>
           </li>
           <li>
-            <a href="category.html">Login</a>
+            <a href="/logout">Logout</a>
+          </li>
+          {% else %}
+          <li>
+            <a href="/login">Login</a>
           </li>
           <li>
-            <a href="about.html">Register</a>
+            <a href="/login">Register</a>
+          </li>
+          {% endif %}
+          <li>
+            <a href="/contact">Contact</a>
           </li>
           <li>
-            <a href="contact.html">CONTACTS</a>
-
-            <ul>
-              <li><a href="contact.html">Contact 01</a></li>
-              <li><a href="contact-2.html">Contact 02</a></li>
-            </ul>
+            <a href="/about">About</a>
           </li>
         </ul>
       </nav><!-- End .mobile-nav -->
@@ -928,6 +942,14 @@
   <!-- Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/demos/demo-24.js' %}"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    {% if messages %}
+      {% for message in messages %}
+      Swal.fire(`{{message}}`,'Ecom','{{message.tags}}');
+      {% endfor %}
+    {% endif %}
+  </script>
   <script>
     const add_to_cart_btn = document.querySelectorAll('.add-to-cart-btn');
     let remove_cart_btn = document.querySelectorAll('.remove-to-cart-btn');
@@ -952,7 +974,7 @@
           {
             if(response.tag == 'success')
             {
-              alert(response.message);
+              Swal.fire(`${response.message}`,'Ecom','success');
               $('.cart-count').text(response.count);
               let product_data = ` <div class="product cart-product">
                                     <div class="product-cart-details">
@@ -993,7 +1015,7 @@
                     {
                       if(response.tag == 'success')
                       {
-                        alert(response.message);
+                        Swal.fire(`${response.message}`,'Ecom','success');
                         $('.cart-count').text(response.count);
                         let all_carts = document.querySelectorAll('.cart-product');
                         all_carts.forEach((crt,c_i) =>
@@ -1007,7 +1029,7 @@
                       }
                       else if(response.tag == 'fail')
                       {
-                        alert(response.message);
+                        Swal.fire(`${response.message}`,'Ecom','info');
                       }
                     }
                   })
@@ -1018,7 +1040,7 @@
             }
             else if(response.tag == 'fail')
             {
-              alert(response.message);
+              Swal.fire(`${response.message}`,'Ecom','info');
             }
           }
         })
@@ -1042,7 +1064,7 @@
           {
             if(response.tag == 'success')
             {
-              alert(response.message);
+              Swal.fire(`${response.message}`,'Ecom','success');
               $('.cart-count').text(response.count);
               let all_carts = document.querySelectorAll('.cart-product');
               all_carts.forEach((crt,c_i) =>
@@ -1056,7 +1078,7 @@
             }
             else if(response.tag == 'fail')
             {
-              alert(response.message);
+              Swal.fire(`${response.message}`,'Ecom','info');
             }
           }
         })

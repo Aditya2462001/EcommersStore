@@ -1,3 +1,4 @@
+from operator import truediv
 from django.db import models
 from django.db.models import base
 from django.contrib.auth.models import User
@@ -15,6 +16,8 @@ class Customer(models.Model):
     city = models.CharField(max_length=100,null=True,blank=True)
     pincode = models.CharField(max_length=100,null=True,blank=True)
     image = models.ImageField(upload_to='customer',null=True,blank=True)
+    otp = models.CharField(max_length=50,null=True,blank=True)
+    verify_email = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

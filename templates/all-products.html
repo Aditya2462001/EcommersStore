@@ -81,7 +81,7 @@
             <!--========================= Main Site Logo ============================== -->
 
             <a href="/" class="logo">
-              <img src="{% static 'images/demos/demo-24/logo.png' %}" alt="Molla Logo" width="110" height="25">
+              <img src="{% static 'images/logo.png' %}" alt="Molla Logo" width="110" height="25">
             </a>
           </div><!-- End .header-left -->
 
@@ -356,7 +356,7 @@
               <div class="row">
                 <div class="col-lg-3 col-md-12">
                   <div class="widget widget-about">
-                    <img src="{% static 'images/demos/demo-24/logo.png' %}" class="footer-logo" alt="Footer Logo"
+                    <img src="{% static 'images/logo.png' %}" class="footer-logo" alt="Footer Logo"
                       width="110" height="25">
                     <p>This is the best Second Hand booked selling Website.There are the best and top quality books. </p>
     
@@ -447,9 +447,9 @@
     <div class="mobile-menu-wrapper">
       <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
-      <form action="#" method="get" class="mobile-search">
+      <form action="/search/" method="GET" class="mobile-search">
         <label for="mobile-search" class="sr-only">Search</label>
-        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..."
+        <input type="search" class="form-control" name="search" id="mobile-search" placeholder="Search in..."
           required>
         <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
       </form>
@@ -457,21 +457,28 @@
       <nav class="mobile-nav">
         <ul class="mobile-menu">
           <li class="active">
-            <a href="index.html">HOME</a>
+            <a href="/">HOME</a>
+          </li>
+          {% if request.user.is_active %}
+          <li>
+            <a href="/dashboard">Dashboard</a>
           </li>
           <li>
-            <a href="category.html">Login</a>
+            <a href="/logout">Logout</a>
+          </li>
+          {% else %}
+          <li>
+            <a href="/login">Login</a>
           </li>
           <li>
-            <a href="about.html">Register</a>
+            <a href="/login">Register</a>
+          </li>
+          {% endif %}
+          <li>
+            <a href="/contact">CONTACTS</a>
           </li>
           <li>
-            <a href="contact.html">CONTACTS</a>
-
-            <ul>
-              <li><a href="contact.html">Contact 01</a></li>
-              <li><a href="contact-2.html">Contact 02</a></li>
-            </ul>
+            <a href="/about">About</a>
           </li>
         </ul>
       </nav><!-- End .mobile-nav -->
@@ -499,6 +506,14 @@
     <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
     <!-- Main JS File -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      {% if messages %}
+        {% for message in messages %}
+        Swal.fire(`{{message}}`,'Ecom','{{message.tags}}');
+        {% endfor %}
+      {% endif %}
+    </script>
     <script>
       const add_to_cart_btn = document.querySelectorAll('.add-to-cart-btn');
       let remove_cart_btn = document.querySelectorAll('.remove-to-cart-btn');
@@ -524,7 +539,7 @@
             {
               if(response.tag == 'success')
               {
-                alert(response.message);
+                Swal.fire(`${response.message}`,'Ecom','success');
                 $('.cart-count').text(response.count);
                 let product_data = ` <div class="product cart-product">
                                       <div class="product-cart-details">
@@ -553,7 +568,6 @@
                 {
                   btn.addEventListener('click',(e) =>
                   {
-                    console.log('btn clicked');
                     $.ajax({
                       url:'/remove-to-cart/',
                       method:'POST',
@@ -565,7 +579,7 @@
                       {
                         if(response.tag == 'success')
                         {
-                          alert(response.message);
+                          Swal.fire(`${response.message}`,'Ecom','success');
                           $('.cart-count').text(response.count);
                           let all_carts = document.querySelectorAll('.cart-product');
                           all_carts.forEach((crt,c_i) =>
@@ -579,7 +593,7 @@
                         }
                         else if(response.tag == 'fail')
                         {
-                          alert(response.message);
+                          Swal.fire(`${response.message}`,'Ecom','info');
                         }
                       }
                     })
@@ -590,7 +604,7 @@
               }
               else if(response.tag == 'fail')
               {
-                alert(response.message);
+                Swal.fire(`${response.message}`,'Ecom','info');
               }
             }
           })
@@ -614,7 +628,7 @@
             {
               if(response.tag == 'success')
               {
-                alert(response.message);
+                Swal.fire(`${response.message}`,'Ecom','success');
                 $('.cart-count').text(response.count);
                 let all_carts = document.querySelectorAll('.cart-product');
                 all_carts.forEach((crt,c_i) =>
@@ -628,7 +642,7 @@
               }
               else if(response.tag == 'fail')
               {
-                alert(response.message);
+                Swal.fire(`${response.message}`,'Ecom','info');
               }
             }
           })
