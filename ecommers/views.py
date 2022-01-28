@@ -29,6 +29,9 @@ razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
 
+#  ========================================= home page ===============================================
+
+
 def Home(request):
     customer = None
     carts = None
@@ -76,6 +79,7 @@ def Home(request):
         'biography_books':biography_books
     }
     return render(request,'index.html',context)
+
 
 # =========================== search product ==============================
 def Search(request):
@@ -453,6 +457,8 @@ def Checkout(request):
         return redirect('/login')
 
 
+# ============================================== handle the request send from the payment ====================
+
 @csrf_exempt
 def HandleRequest(request):
     if request.method == 'POST':
@@ -618,6 +624,8 @@ def RecentOtp(request):
         return JsonResponse({'data':'time out for otp'})
 
 
+
+#  ======================================== dashboard ==========================================
 def DashBoard(request):
     customer = None
     carts = None
@@ -660,6 +668,7 @@ def DashBoard(request):
     else:
         return redirect('/login')
 
+
 # ================================ return request ============================
 def ReturnReuqest(request):
     customer = None
@@ -700,7 +709,7 @@ def ReturnReuqest(request):
         return redirect('/login')
 
 
-
+# ============================================= Edit Profile ===============================
 
 def EditProfile(request):
     if request.user.is_active:
@@ -792,7 +801,9 @@ def ProductList(request):
     else:
         return redirect('/')
 
-# add Product View
+
+
+# =============================== add Product View =======================
 def AddProduct(request):
     categories = None
     if request.user.is_active:
@@ -842,6 +853,3 @@ def AboutUs(request):
 
 
 
-
-def Career(request):
-    return render(request,'file name  ',{})
