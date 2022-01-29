@@ -1,0 +1,24 @@
+{% if products %}
+{% for product in products reversed%}
+<tr>
+  <th scope="row">{{forloop.counter}}</th>
+  <td>{{product.product_name}}</td>
+  <td>{{product.category.name}}</td>
+  <td>{{product.product_rating}}</td>
+  <td>{{product.rate}}</td>
+  <td>{{product.selling_rate}}</td>
+  <td>{{product.stock_count}}</td>
+  <td>
+    {% if product.available %}
+      Available
+    {% else %}
+      Not Available
+    {% endif %}
+  </td>
+  <td>
+    <a href="/edit-product/{{product.id}}" class="btn btn-warning">Edit</a>
+    <a href="/product-delete/{{product.id}}" class="btn btn-warning">Delete</a>
+  </td>
+</tr>
+{% endfor %}
+{% endif %}

@@ -32,7 +32,13 @@ urlpatterns = [
 
     # ========================= admin action buttons ============
     path('add-product/',views.AddProduct,name="add-product"),
+    path('edit-product/<str:id>',views.EditProduct,name="edit-product"),
     path('product-list/',views.ProductList,name="product-list"),
+    path('product-list-filter/',views.FilterProductList,name="product-list-filter"),
+    path('product-delete/<str:id>/',views.DeleteProduct,name="product-delete"),
+    path('add-category/',views.AddCategory,name="add-categiry"),
+    path('update-category/<str:id>',views.EditCategory,name="update-categiry"),
+    path('delete-category/<str:id>',views.DeleteCategory,name="delete-categiry"),
 
     # ======================= auth urls ========================
     path('login/',views.LoginView,name="login"),
@@ -49,7 +55,4 @@ urlpatterns = [
 
 
     # ========================== Payment ======================================
-
-
-    path('career/',views.Career,name="career"),
 ]

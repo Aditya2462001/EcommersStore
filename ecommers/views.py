@@ -1,6 +1,8 @@
+from gettext import Catalog
 import imp
 import random
-from django.shortcuts import redirect, render
+from unicodedata import category
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http.response import HttpResponse, JsonResponse,HttpResponseBadRequest
 from collections import namedtuple
 import razorpay
@@ -29,31 +31,18 @@ razorpay_client = razorpay.Client(
     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
 
-#  ========================================= home page ===============================================
-
-
 def Home(request):
     customer = None
     carts = None
     cart_count =None
-    programming_product = None
-    love_books = None
-    biography_books = None
     prod = []
-    if Category.objects.filter(name = 'Programming').exists():
-        category = Category.objects.get(name = 'Programming')
-        programming_product = Products.objects.filter(category = category.id)
-    
-
-    if Category.objects.filter(name = 'Love').exists():
-        category = Category.objects.get(name = 'Love')
-        love_books = Products.objects.filter(category = category.id)
-    
-    if Category.objects.filter(name = 'Biography').exists():
-        category = Category.objects.get(name = 'Biography')
-        biography_books = Products.objects.filter(category = category.id)
-
+    category = Category.objects.get(name = 'Programming')
+    programming_product = Products.objects.filter(category = category.id)
     products = Products.objects.all()
+    category = Category.objects.get(name = 'Love')
+    love_books = Products.objects.filter(category = category.id)
+    category = Category.objects.get(name = 'Biography')
+    biography_books = Products.objects.filter(category = category.id)
     categories = Category.objects.all()
     if request.user.is_active:
         if Customer.objects.filter(user = request.user).exists():
@@ -67,6 +56,9 @@ def Home(request):
         if Products.objects.filter(category = c.id).exists():
             prod.append(Products.objects.filter(category = c.id).first())
 
+    
+    print(customer)
+
     context = {
         'products':products,
         'customer':customer,
@@ -79,7 +71,6 @@ def Home(request):
         'biography_books':biography_books
     }
     return render(request,'index.html',context)
-
 
 # =========================== search product ==============================
 def Search(request):
@@ -410,6 +401,9 @@ def Checkout(request):
 
                         for cart in carts:
                             product_booking.cart.add(cart.id)
+                            product = Products.objects.get(id = cart.product.id)
+                            product.stock_count -= 1
+                            product.save()
                             cart.booked = True
                             cart.save()
 
@@ -457,8 +451,6 @@ def Checkout(request):
         return redirect('/login')
 
 
-# ============================================== handle the request send from the payment ====================
-
 @csrf_exempt
 def HandleRequest(request):
     if request.method == 'POST':
@@ -481,6 +473,9 @@ def HandleRequest(request):
                 cart = Cart.objects.get(id = booking.id)
                 cart.booked = True
                 cart.save()
+                product = Products.objects.get(id = cart.product.id)
+                product.stock_count -= 1
+                product.save()
 
             result = razorpay_client.utility.verify_payment_signature(params_dict)
             if result is None:
@@ -624,8 +619,6 @@ def RecentOtp(request):
         return JsonResponse({'data':'time out for otp'})
 
 
-
-#  ======================================== dashboard ==========================================
 def DashBoard(request):
     customer = None
     carts = None
@@ -668,7 +661,6 @@ def DashBoard(request):
     else:
         return redirect('/login')
 
-
 # ================================ return request ============================
 def ReturnReuqest(request):
     customer = None
@@ -709,7 +701,7 @@ def ReturnReuqest(request):
         return redirect('/login')
 
 
-# ============================================= Edit Profile ===============================
+
 
 def EditProfile(request):
     if request.user.is_active:
@@ -793,17 +785,29 @@ def LogoutView(request):
 def ProductList(request):
     if request.user.is_active and request.user.is_superuser:
         products = Products.objects.all()
+        categories = Category.objects.all()
 
         context = {
-            'products':products
+            'products':products,
+            'categories':categories
         }
-        return render(request,'product-list.html',context)
+        return render(request,'admin/product-list.html',context)
     else:
         return redirect('/')
 
+def FilterProductList(request):
+    filter = request.GET.get('filter')
 
+    if filter == 'All':
+        products = Products.objects.all()
+    else:
+        products = Products.objects.filter(category__id = filter)
 
-# =============================== add Product View =======================
+    data = render_to_string('admin/data.html',{'products':products})
+
+    return JsonResponse({'data':data})
+
+# add Product View
 def AddProduct(request):
     categories = None
     if request.user.is_active:
@@ -812,7 +816,6 @@ def AddProduct(request):
             form = ProductForm()
             if request.method == 'POST':
                 form = ProductForm(request.POST or None,request.FILES or None)
-                print(form)
                 print(form.errors)
                 if form.is_valid():
                     prod = form.save(commit = False)
@@ -824,10 +827,107 @@ def AddProduct(request):
                 'categories':categories
             }
 
-            return render(request,'upload-product.html',context)
+            return render(request,'admin/upload-product.html',context)
     
     return redirect('/')
 
+
+# ===================================== Edit Product =======================
+def EditProduct(request,id):
+    categories = None
+    if request.user.is_active:
+        if request.user.is_superuser:
+            categories = Category.objects.all()
+            form = ProductForm()
+            product = get_object_or_404(Products,id = id)
+            if request.method == 'POST':
+                form = ProductForm(request.POST or None,request.FILES or None,instance=product)
+                print(form.errors)
+                if form.is_valid():
+                    prod = form.save(commit = False)
+                    prod.save()
+                    form.save_m2m()
+                    messages.success(request,'Product Update Successfully')
+            context = {
+                'form':form,
+                'categories':categories,
+                'product':product
+            }
+
+            return render(request,'admin/Edit-product.html',context)
+    
+    return redirect('/')
+
+# ========================== delete product ==============================
+
+def DeleteProduct(request,id):
+    if request.user.is_active:
+        if request.user.is_superuser:
+            product = get_object_or_404(Products,id = id)
+            product.delete()
+            messages.success(request,'Product deleted successfully')
+
+            return redirect('/product-list')
+           
+    return redirect('/')
+
+
+# ====================== add category ====================================
+
+def AddCategory(request):
+    if request.user.is_active:
+        if request.user.is_superuser:
+            categories = Category.objects.all()
+            if request.method == 'POST':
+                name = request.POST.get('category_name')
+                image = request.FILES.get('img')
+                
+                if Category.objects.filter(name = name).exists():
+                    messages.info(request,'Category Is already added')
+                    return render(request,'admin/add-category.html',{'categories':categories})
+
+                category = Category.objects.create(name = name)
+                if image:
+                    category.image = image
+                    category.save()
+                
+                messages.success(request,'Category Added!')
+            
+            return render(request,'admin/add-category.html',{'categories':categories,'title':'Add'})
+
+
+def EditCategory(request,id):
+     if request.user.is_active:
+        if request.user.is_superuser:
+            categories = Category.objects.all()
+            category = Category.objects.get(id = id)
+            if request.method == 'POST':
+                name = request.POST.get('category_name')
+                image = request.FILES.get('img')
+
+                if Category.objects.filter(name = name).exists():
+                    messages.info(request,'Category Is already added')
+                    return render(request,'admin/add-category.html',{'categories':categories,'category':category,'title':'Update'})
+                
+                category.name = name
+                if image:
+                    category.image = image
+                
+                category.save()
+
+                messages.success(request,'Category Updated!')
+                
+            return render(request,'admin/add-category.html',{'categories':categories,'category':category,'title':'Update'})
+
+
+def DeleteCategory(request,id):
+    if request.user.is_active:
+        if request.user.is_superuser:
+            category = Category.objects.get(id = id)
+            category.delete()
+            messages.success(request,'Category deteted!')
+
+            return redirect('/add-category/')
 
 
 # =============================== contact Us ===========================
